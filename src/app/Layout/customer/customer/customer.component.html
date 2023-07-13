@@ -1,0 +1,604 @@
+<div class="row">
+    <div class="col-12">
+      <h1>Customer</h1>
+      &nbsp;&nbsp;&nbsp;
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-8 text-left">
+      <div class="d-block d-md-inline-block">
+        <div class="input-group">
+          <input
+            #textSearch
+            type="text"
+            id="searchInput"
+            style="width: 220px"
+            class="form-control"
+            placeholder="Search"
+            data-provide="typeahead"
+            autocomplete="off"
+            (keyup)="onKeyUp($event.target.value)"
+            (keyup.enter)="search()"
+          />
+          &nbsp;&nbsp;&nbsp;
+  
+          <!-- (onSelectAll)="onSelectAll($event)" -->
+  
+          <button type="submit" class="btn btn-primary ml-2" (click)="search()">
+            <i class="simple-icon-magnifier"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- <div class="col-2">
+  
+      </div> -->
+  
+    <div class="col-md-4 text-right">
+      <button
+        class="btn btn-primary"
+        (click)="openModalForAdd(templateAddUpdate)"
+      >
+        Add Customer
+      </button>
+    </div>
+  </div>
+  
+  <div class="separator mb-3"></div>
+  
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped text-center">
+              <thead>
+                <tr>
+                  <th class="text-left" scope="col">Image</th>
+                  <th class="text-left" scope="col">Code</th>
+                  <th class="text-left" scope="col">Name</th>
+                  <th class="text-left" scope="col">Type</th>
+                  <th class="text-left" scope="col">Phone No</th>
+                  <th class="text-left" scope="col">Email</th>
+                  <th class="text-left" scope="col">Address</th>
+                  <th class="text-left" scope="col">Status</th>
+                  <th class="text-center" scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let cst of CustomerList
+                      | paginate
+                        : {
+                            itemsPerPage: recordsPerPage,
+                            currentPage: p,
+                            totalItems: totalRecords
+                          }
+                  "
+                >
+                <td class="text-left"><img
+                  class="rounded-circle"
+                  src="{{cst.cs_Image}}"
+                  width="50px"
+                  height="50px"
+                /></td>
+                  <td class="text-left">{{ cst.customerNo }}</td>
+                  <td class="text-left">{{ cst.cs_FirstName + ' ' + cst.cs_LastName }}</td>
+                  <td class="text-left">{{ cst.cs_CustomerType }}</td>
+                  <td class="text-left">{{ cst.cs_Phone }}</td>
+                  <td class="text-left">{{ cst.cs_Email }}</td>
+                  <td class="text-left">{{ cst.cs_Address }}</td>
+                  <td class="text-left">{{ cst.isActive | Status }}</td>
+
+                  <td class="text-center">
+                    <i
+                      (click)="
+                        openModalForUpdate(cst.customerID, templateAddUpdate)
+                      "
+                      class="fa fa-edit cursor-pointer"
+                      style="color: #145388; font-size: 15px; cursor: pointer"
+                      aria-hidden="true"
+                    ></i>
+                    &nbsp;
+                    <i
+                      class="fa fa-trash-o cursor-pointer text-danger"
+                      style="font-size: 20px"
+                      aria-hidden="true"
+                      (click)="deleteAlert(cst)"
+                    ></i
+                    >&nbsp;
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination-controls
+            (pageChange)="pageChange((p = $event))"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #templateAddUpdate>
+    <form
+      [formGroup]="addCustomerForm"
+      (ngSubmit)="againValidOnAdd(addCustomerForm.value)"
+      novalidate
+    >
+      <div
+        class="modal-header"
+        style="background-color: #0f3d64; border-radius: 0px"
+      >
+        <span
+          *ngIf="formForEdit"
+          class="modal-title"
+          style="color: #fff; font-size: 18px"
+        >
+          Edit Customer</span
+        >
+        <span
+          *ngIf="formForAdd"
+          class="modal-title"
+          style="color: #fff; font-size: 18px"
+        >
+          Add Customer</span
+        >
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="modalRef.hide()"
+          style="color: #fff"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <div *ngIf="customerImage" class="text-center">
+                <img
+                class="rounded"
+                [src]="customerImage"
+                width="100px"
+                height="100px"
+              />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4"></div>
+      
+        </div>
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label
+                >Upload Image &nbsp;<span class="text-danger text-center">*</span
+                >&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                type="file"
+                accept="image/png, image/gif, image/jpeg, image/jpg"
+                (change)="onChange($event)"
+                class="form-control"
+                formControlName="customerImage"
+                placeholder="Choose Image"
+              />
+              <div
+                *ngIf="
+                  addCustomerForm.controls['customerImage'].hasError('required') &&
+                  addCustomerForm.controls['customerImage'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label
+                >Code &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ></label>
+              <input
+              class="form-control"
+              trim="blur"
+              formControlName="customerCode"
+              placeholder=""
+              tabindex="1"
+              minlength="4"
+              maxlength="30"
+              disabled
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label
+                >First Name &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="customerFirstName"
+                placeholder="Enter First Name"
+                tabindex="1"
+                maxlength="30"
+              />
+              <div
+                *ngIf="
+                  addCustomerForm.controls['customerFirstName'].hasError('required') &&
+                  addCustomerForm.controls['customerFirstName'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <div *ngIf="isCustomerNameDuplicate" class="text-danger">
+                This Customer already exists, please try different one
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label
+                >Last Name &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="customerLastName"
+                placeholder="Enter Last Name Name"
+                tabindex="1"
+                maxlength="30"
+              />
+              <div
+                *ngIf="
+                  addCustomerForm.controls['customerLastName'].hasError('required') &&
+                  addCustomerForm.controls['customerLastName'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <div *ngIf="isCustomerNameDuplicate" class="text-danger">
+                This Customer already exists, please try different one
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >Type &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <select
+              class="mdb-select md-form col-md-12 text-left form-control"
+              searchable="Search"
+              formControlName="customerType"
+            >
+              <option value="null" disabled selected>
+                Select Customer Type
+              </option>
+              <option>Member</option>
+                  <option>Non-Member</option>
+        
+            </select>
+              <div
+                *ngIf="
+                  addCustomerForm.controls['customerType'].hasError('required') &&
+                  addCustomerForm.controls['customerType'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <div *ngIf="isCustomerNameDuplicate" class="text-danger">
+                This Customer already exists, please try different one
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >Phone No &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="customerPhoneNo"
+                placeholder="Enter Phone No"
+                tabindex="1"
+                maxlength="30"
+              />
+              <div
+                *ngIf="
+                  addCustomerForm.controls['customerPhoneNo'].hasError(
+                    'required'
+                  ) && addCustomerForm.controls['customerPhoneNo'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >Email &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+              class="form-control"
+              trim="blur"
+              formControlName="customerEmail"
+              placeholder="Enter Email"
+              tabindex="1"
+              maxlength="30"
+            />
+              <div
+                *ngIf="
+                  addCustomerForm.controls['customerEmail'].hasError('required') &&
+                  addCustomerForm.controls['customerEmail'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+            
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >Address &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="customerAddress"
+                placeholder="Enter Address"
+                tabindex="1"
+                maxlength="300"
+              />
+              <div
+                *ngIf="
+                  addCustomerForm.controls['customerAddress'].hasError(
+                    'required'
+                  ) && addCustomerForm.controls['customerAddress'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <!-- <div *ngIf="isCustomerNameDuplicate" class="text-danger">
+                This Customer already exists, please try different one
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <div class="text-left">
+              <div class="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  [checked]="customerCheck"
+                  (change)="customerCheck = !customerCheck"
+                  formControlName="customerIsActive"
+                  value=""
+                  id="customerIsActive"
+                />
+                <label
+                  class="custom-control-label"
+                  for="customerIsActive"
+                  [innerHTML]="
+                    addCustomerForm.value.customerIsActive === true
+                      ? 'Active'
+                      : 'Inactive'
+                  "
+                >
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-2">
+            <div class="text-left">
+              <div class="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  [checked]="CustomerRepeat"
+                  (change)="CustomerRepeat = !CustomerRepeat"
+                  formControlName="oneTimeRepeat"
+                  value=""
+                  id="oneTimeRepeat"
+                />
+                <label
+                  class="custom-control-label"
+                  for="oneTimeRepeat"
+                  [innerHTML]="
+                    addCustomerForm.value.oneTimeRepeat === true
+                      ? 'First Time'
+                      : 'Follow Up'
+                  "
+                >
+                </label>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          style="background-color: #0f3d64"
+          *ngIf="formForAdd"
+          [disabled]="!addCustomerForm.valid || btnDisable"
+          class="btn text-white pull-right"
+          type="submit"
+          tabindex="4"
+        >
+          <i class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i
+            *ngIf="loading"
+            class="fa fa-refresh fa-spin"
+          ></i>
+        </button>
+        <button
+          type="button"
+          (click)="againValidOnUpdate(addCustomerForm.value)"
+          *ngIf="formForEdit"
+          style="background-color: #0f3d64"
+          class="btn text-white pull-right"
+          [disabled]="addCustomerForm.pristine || btnDisable"
+        >
+          <i class="fa fa-save saveIcon"></i>&nbsp;Update&nbsp;<i
+            *ngIf="loading"
+            class="fa fa-refresh fa-spin"
+          ></i>
+        </button>
+        <button
+          (click)="close()"
+          style="margin-right: 5px"
+          type="button"
+          class="btn btn-danger pull-right"
+        >
+          <i class="fa fa-close" aria-hidden="true"></i> Cancel
+        </button>
+      </div>
+    </form>
+  </ng-template>
+  
+  <ng-template #delete>
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Delete Customer</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" (click)="close()">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h6 class="text-black-50">Are you sure you want to delete this Customer?</h6>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="deletePrd(selectedObj)"
+        [disabled]="btnDisable"
+      >
+        Delete
+      </button>
+    </div>
+  </ng-template>
+  
+  <ng-template #prescriptionTemplate>
+    <div
+      class="modal-header"
+      style="background-color: #0f3d64; border-radius: 0px"
+    >
+      <span class="modal-title" style="color: #fff; font-size: 18px"
+        >Prescription</span
+      >
+      <button
+        type="button"
+        class="btn-close close pull-right"
+        aria-label="Close"
+        (click)="modalRef?.hide()"
+        style="color: #fff"
+      >
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="displayImage" class="text-center">
+        <img [src]="displayImage" width="400px" height="500px" />
+      </div>
+    </div>
+  </ng-template>
+  

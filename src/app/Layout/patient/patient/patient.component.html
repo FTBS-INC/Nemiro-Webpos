@@ -1,0 +1,623 @@
+<div class="row">
+  <div class="col-12">
+    <h1>Patient</h1>
+    &nbsp;&nbsp;&nbsp;
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-md-8 text-left">
+    <div class="d-block d-md-inline-block">
+      <div class="input-group">
+        <input
+          #textSearch
+          type="text"
+          id="searchInput"
+          style="width: 220px"
+          class="form-control"
+          placeholder="Search"
+          data-provide="typeahead"
+          autocomplete="off"
+          (keyup)="onKeyUp($event.target.value)"
+          (keyup.enter)="search()"
+        />
+        &nbsp;&nbsp;&nbsp;
+
+        <!-- (onSelectAll)="onSelectAll($event)" -->
+
+        <button type="submit" class="btn btn-primary ml-2" (click)="search()">
+          <i class="simple-icon-magnifier"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-2">
+
+    </div> -->
+
+  <div class="col-md-4 text-right">
+    <button
+      class="btn btn-primary"
+      (click)="openModalForAdd(templateAddUpdate)"
+    >
+      Add Patient
+    </button>
+  </div>
+</div>
+
+<div class="separator mb-3"></div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th class="text-left" scope="col">Patient No.</th>
+                <th class="text-left" scope="col">Name</th>
+                <th class="text-left" scope="col">Age</th>
+                <th class="text-left" scope="col">Diagnoses</th>
+                <th class="text-left" scope="col">Phone No.</th>
+                <th class="text-left" scope="col">Consultant</th>
+                <th class="text-left" scope="col">One Time Repeat</th>
+                <th class="text-left" scope="col">Prescription</th>
+                <th class="text-left" scope="col">Status</th>
+                <th class="text-center" scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let pat of patientList
+                    | paginate
+                      : {
+                          itemsPerPage: recordsPerPage,
+                          currentPage: p,
+                          totalItems: totalRecords
+                        }
+                "
+              >
+                <td class="text-left">{{ pat.patientNo }}</td>
+                <td class="text-left">{{ pat.patientName }}</td>
+                <td class="text-left">{{ pat.patientAge }}</td>
+                <td class="text-left">{{ pat.diagnosis }}</td>
+                <td class="text-left">{{ pat.phoneNo }}</td>
+                <td class="text-left">{{ pat.consultant.consultantName }}</td>
+                <td class="text-left">{{ pat.oneTimeRepeat }}</td>
+                <td class="text-centre">
+                  <i
+                    class="fa fa-eye"
+                    aria-hidden="true"
+                    (click)="
+                      displayPrescription(
+                        pat.prescription,
+                        prescriptionTemplate
+                      )
+                    "
+                    style="color: #145388; font-size: 15px; cursor: pointer"
+                  ></i>
+                </td>
+                <td class="text-centre">{{ pat.isActive | Status }}</td>
+
+                <td class="text-center">
+                  <i
+                    (click)="
+                      openModalForUpdate(pat.patientID, templateAddUpdate)
+                    "
+                    class="fa fa-edit cursor-pointer"
+                    style="color: #145388; font-size: 15px; cursor: pointer"
+                    aria-hidden="true"
+                  ></i>
+                  &nbsp;
+                  <i
+                    class="fa fa-trash-o cursor-pointer text-danger"
+                    style="font-size: 20px"
+                    aria-hidden="true"
+                    (click)="deleteAlert(pat)"
+                  ></i
+                  >&nbsp;
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination-controls
+          (pageChange)="pageChange((p = $event))"
+        ></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateAddUpdate>
+  <form
+    [formGroup]="addPatientForm"
+    (ngSubmit)="againValidOnAdd(addPatientForm.value)"
+    novalidate
+  >
+    <div
+      class="modal-header"
+      style="background-color: #0f3d64; border-radius: 0px"
+    >
+      <span
+        *ngIf="formForEdit"
+        class="modal-title"
+        style="color: #fff; font-size: 18px"
+      >
+        Edit Patient</span
+      >
+      <span
+        *ngIf="formForAdd"
+        class="modal-title"
+        style="color: #fff; font-size: 18px"
+      >
+        Add Patient</span
+      >
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="modalRef.hide()"
+        style="color: #fff"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <div *ngIf="patientImage" class="text-center">
+              <img
+                class="rounded"
+                [src]="patientImage"
+                width="100px"
+                height="100px"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label
+              >Upload Prescription &nbsp;<span class="text-danger text-center">*</span
+              >&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              type="file"
+              accept="image/png, image/gif, image/jpeg, image/jpg"
+              (change)="onChange($event)"
+              class="form-control"
+              formControlName="patientIMG"
+              placeholder="Choose Image"
+              (keyup)="setUpdateBtn()"
+              tabindex="1"
+            />
+            <div
+              *ngIf="
+                addPatientForm.controls['patientIMG'].hasError('required') &&
+                addPatientForm.controls['patientIMG'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <!-- <div *ngIf="isPatientNameDuplicate" class="text-danger">
+              This Patient already exists, please try different one
+            </div> -->
+          </div>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Patient No &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="patientNo"
+              placeholder="Enter Patient No."
+              tabindex="2"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addPatientForm.controls['patientNo'].hasError('required') &&
+                addPatientForm.controls['patientNo'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <!-- <div *ngIf="isPatientNameDuplicate" class="text-danger">
+              This Patient already exists, please try different one
+            </div> -->
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Patient Name &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="patientName"
+              placeholder="Enter patient Name"
+              tabindex="3"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addPatientForm.controls['patientName'].hasError('required') &&
+                addPatientForm.controls['patientName'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <div *ngIf="isPatientNameDuplicate" class="text-danger">
+              This Patient already exists, please try different one
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Patient Age &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="patientAge"
+              placeholder="Enter Patient Age"
+              tabindex="4"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addPatientForm.controls['patientAge'].hasError('required') &&
+                addPatientForm.controls['patientAge'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <div *ngIf="isPatientNameDuplicate" class="text-danger">
+              This Patient already exists, please try different one
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Diagnoses &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="patientDiagnoses"
+              placeholder="Enter Diagnoses"
+              tabindex="5"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addPatientForm.controls['patientDiagnoses'].hasError(
+                  'required'
+                ) && addPatientForm.controls['patientDiagnoses'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <!-- <div *ngIf="isPatientNameDuplicate" class="text-danger">
+              This Patient already exists, please try different one
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Consultant &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <div class="d-flex justify-content-center">
+              <select
+                class="mdb-select md-form col-md-12 text-left form-control"
+                searchable="Search"
+                formControlName="consultant"
+                (keyup)="setUpdateBtn()"
+                tabindex="6"
+              >
+                <option value="null" disabled selected>Select Consultant</option>
+                <option
+                  *ngFor="let i of consultantList"
+                  [value]="i.consultantID"
+                >
+                  {{ i.consultantName }}
+                </option>
+                <!-- <option value="2">Painkillers</option>
+                    <option value="3">Injections</option>
+                    <option value="3">Antibiotics</option>
+                    <option value="3">Baby Care</option> -->
+              </select>
+            </div>
+            <div
+              *ngIf="
+                addPatientForm.controls['consultant'].hasError('required') &&
+                addPatientForm.controls['consultant'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <!-- <div *ngIf="isPatientNameDuplicate" class="text-danger">
+              This Patient already exists, please try different one
+            </div> -->
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Phone No &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="patientPhoneNo"
+              placeholder="Enter Phone No"
+              tabindex="7"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addPatientForm.controls['patientPhoneNo'].hasError(
+                  'required'
+                ) && addPatientForm.controls['patientPhoneNo'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <!-- <div *ngIf="isPatientNameDuplicate" class="text-danger">
+              This Patient already exists, please try different one
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <div class="text-left">
+            <div class="custom-control custom-switch">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                [checked]="patientCheck"
+                (change)="patientCheck = !patientCheck"
+                formControlName="patientisActive"
+                value=""
+                id="patientisActive"
+                (keyup)="setUpdateBtn()"
+                tabindex="8"
+              />
+              <label
+                class="custom-control-label"
+                for="patientisActive"
+                [innerHTML]="
+                  addPatientForm.value.patientisActive === true
+                    ? 'Active'
+                    : 'Inactive'
+                "
+              >
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="text-left">
+            <div class="custom-control custom-switch">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                [checked]="patientRepeat"
+                (change)="patientRepeat = !patientRepeat"
+                formControlName="oneTimeRepeat"
+                value=""
+                id="oneTimeRepeat"
+                (keyup)="setUpdateBtn()"
+                tabindex="9"
+              />
+              <label
+                class="custom-control-label"
+                for="oneTimeRepeat"
+                [innerHTML]="
+                  addPatientForm.value.oneTimeRepeat === true
+                    ? 'First Time'
+                    : 'Follow Up'
+                "
+              >
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        style="background-color: #0f3d64"
+        *ngIf="formForAdd"
+        [disabled]="!addPatientForm.valid || btnDisable"
+        class="btn text-white pull-right"
+        type="submit"
+        tabindex="10"
+      >
+        <i class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i
+          *ngIf="loading"
+          class="fa fa-refresh fa-spin"
+        ></i>
+      </button>
+      <!-- <button *ngIf="formForAdd" [disabled]="!addCategoryForm.valid || btnDisable || isPatientNameDuplicate" style="background-color: #576a3d;" class="btn text-white pull-right" type="submit" tabindex="4"><i
+                  class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i *ngIf="loading"
+                  class="fa fa-refresh fa-spin"></i></button> -->
+      <button
+        type="button"
+        (click)="againValidOnUpdate(addPatientForm.value)"
+        *ngIf="formForEdit"
+        style="background-color: #0f3d64"
+        class="btn text-white pull-right"
+        
+        [disabled]="addPatientForm.pristine || btnDisable"
+      >
+        <i class="fa fa-save saveIcon"></i>&nbsp;Update&nbsp;<i
+          *ngIf="loading"
+          class="fa fa-refresh fa-spin"
+        ></i>
+      </button>
+      <button
+        (click)="close()"
+        style="margin-right: 5px"
+        type="button"
+        class="btn btn-danger pull-right"
+        tabindex="11"
+      >
+        <i class="fa fa-close" aria-hidden="true"></i> Cancel
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Delete Patient</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" (click)="close()">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h6 class="text-black-50">Are you sure you want to delete this Patient?</h6>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="deletePrd(selectedObj)"
+      [disabled]="btnDisable"
+    >
+      Delete
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #prescriptionTemplate>
+  <div
+    class="modal-header"
+    style="background-color: #0f3d64; border-radius: 0px"
+  >
+    <span class="modal-title" style="color: #fff; font-size: 18px"
+      >Prescription</span
+    >
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="modalRef?.hide()"
+      style="color: #fff"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="displayImage" class="text-center">
+      <img [src]="displayImage" width="400px" height="500px" />
+    </div>
+  </div>
+</ng-template>

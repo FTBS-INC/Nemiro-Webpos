@@ -1,0 +1,426 @@
+<div class="row" id="notification">
+  <div class="col-6 text-left">
+    <h1>Roles</h1>
+    &nbsp;&nbsp;&nbsp;
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-md-8 text-left">
+    <div class="d-block d-md-inline-block">
+      <div class="input-group">
+        <input
+          #textSearch
+          type="text"
+          id="searchInput"
+          style="width: 220px"
+          class="form-control"
+          placeholder="Search"
+          data-provide="typeahead"
+          autocomplete="off"
+          (keyup)="onKeyUp($event.target.value)"
+          (keyup.enter)="search()"
+        />
+        &nbsp;&nbsp;&nbsp;
+
+        <!-- (onSelectAll)="onSelectAll($event)" -->
+
+        <button type="submit" class="btn btn-primary ml-2" (click)="search()">
+          <i class="simple-icon-magnifier"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-2">
+
+    </div> -->
+
+  <div class="col-md-4 text-right">
+    <button
+      class="btn btn-primary"
+      (click)="openModalForAdd(templateAddUpdate)"
+    >
+      Add Role
+    </button>
+  </div>
+</div>
+
+<div class="separator mb-3"></div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <!-- <th class="text-left" scope="col">Branches</th> -->
+                <th class="text-left" scope="col">Name</th>
+                <!-- <th class="text-left" scope="col">Description</th>
+
+                <th class="text-left" scope="col">Remarks</th> -->
+                <th class="text-left" scope="col">Status</th>
+
+                <th class="text-center" scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rol of rolesList">
+                <td class="text-left">{{ rol.name }}</td>
+                <!-- <td class="text-left">{{ rol.descp }}</td> -->
+                <!-- <td class="text-left">{{ rol.features }}</td> -->
+                <!-- <td class="text-left">{{ rol.remarks }}</td> -->
+                <td class="text-left">{{ rol.isActive | Status }}</td>
+
+                <td class="text-center">
+                  <i
+                    (click)="openModalForUpdate(rol.roleID, templateAddUpdate)"
+                    class="fa fa-edit cursor-pointer"
+                    style="color: #145388; font-size: 15px; cursor: pointer"
+                    aria-hidden="true"
+                  ></i>
+                  &nbsp;
+                  <i
+                    class="fa fa-trash-o cursor-pointer text-danger"
+                    style="font-size: 20px"
+                    aria-hidden="true"
+                    (click)="deleteAlert(rol)"
+                  ></i
+                  >&nbsp;
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateAddUpdate>
+  <form
+    [formGroup]="addRolesForm"
+    (ngSubmit)="againValidOnAdd(addRolesForm.value)"
+    novalidate
+  >
+    <div
+      class="modal-header"
+      style="background-color: #0f3d64; border-radius: 0px"
+    >
+      <span
+        *ngIf="formForEdit"
+        class="modal-title"
+        style="color: #fff; font-size: 18px"
+        >Edit Role</span
+      >
+      <span
+        *ngIf="formForAdd"
+        class="modal-title"
+        style="color: #fff; font-size: 18px"
+        >Add Role</span
+      >
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="modalRef.hide()"
+        style="color: #fff"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <!-- <div class="col-md-12">
+                  <div class=" form-group">
+                      <label>Category Code &nbsp;<span class="text-danger">*</span>&nbsp;<i ngIf="isValidating" style="color: #576a3d;" class="fa fa-refresh fa-spin"></i><i ngIf = "isMarkCorrect" style="color: #576a3d;" class="fa fa-check" aria-hidden="true"></i></label>
+                      <input class="form-control" trim="blur" formControlName="categoryCode" placeholder="Enter Category Code" (focusout)="checkProductName($event.target.value)" tabindex="1" maxlength="30"/>
+                      <div *ngIf="addCategoryForm.controls['categoryCode'].hasError('required') && addCategoryForm.controls['categoryCode'].touched" class="text-danger">Required</div>
+                      <div *ngIf="isProductNameDuplicate" class="text-danger">This user already exists, please try different one</div>
+                  </div>
+              </div> -->
+        <!-- <div class="col-md-6" style="margin-top: 40px;">
+                  <input class="align-middle" type="checkbox" id="perishable" name="perishable" formControlName="peri" tabindex="2">
+                  <label for="perishable">&nbsp;  Perishable  </label>
+              </div> -->
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label
+            >Features &nbsp;<span class="text-danger">*</span>&nbsp;<i
+              *ngIf="isValidating"
+              style="color: #576a3d"
+              class="fa fa-refresh fa-spin"
+            ></i
+            ><i
+              *ngIf="isMarkCorrect"
+              style="color: #576a3d"
+              class="fa fa-check"
+              aria-hidden="true"
+            ></i
+          ></label>
+          <ng-select
+            [items]="featureList"
+            trim="blur"
+            [closeOnSelect]="false"
+            bindLabel="path"
+            bindValue="featureID"
+            [multiple]="true"
+            placeholder="Select Feature"
+            formControlName="featureAssigned"
+            (keyup)="setUpdateBtn()"
+            tabindex="1"
+          >
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label
+              >Role Name &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="roleName"
+              placeholder="Enter Role Name"
+              tabindex="2"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addRolesForm.controls['roleName'].hasError('required') &&
+                addRolesForm.controls['roleName'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <div *ngIf="isProductNameDuplicate" class="text-danger">
+              This role already exists, please try different one
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label
+              >Role Description &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <textarea
+              class="form-control"
+              trim="blur"
+              formControlName="roleDescription"
+              placeholder="Enter Role Description"
+              tabindex="3"
+              maxlength="300"
+            
+            >
+            </textarea>
+            <div
+              *ngIf="
+                addRolesForm.controls['roleDescription'].hasError('required') &&
+                addRolesForm.controls['roleDescription'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <div *ngIf="isProductNameDuplicate" class="text-danger">
+              This description already exists, please try different one
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label
+              >Role Remarks &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <textarea
+              class="form-control"
+              trim="blur"
+              formControlName="roleRemarks"
+              placeholder="Enter Role Remarks"
+              tabindex="4"
+              maxlength="300"
+            >
+            </textarea>
+            <div
+              *ngIf="
+                addRolesForm.controls['roleRemarks'].hasError('required') &&
+                addRolesForm.controls['roleRemarks'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label
+              >Role Status &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <div class="custom-control custom-switch">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                [checked]="roleCheck"
+                (change)="roleCheck = !roleCheck"
+                formControlName="roleIsActive"
+                value=""
+                id="roleIsActive"
+                (keyup)="setUpdateBtn()"
+                tabindex="5"
+              />
+              <label
+                class="custom-control-label"
+                for="roleIsActive"
+                [innerHTML]="
+                  addRolesForm.value.roleIsActive === true
+                    ? 'Active'
+                    : 'Inactive'
+                "
+              >
+              </label>
+            </div>
+            <div
+              *ngIf="
+                addRolesForm.controls['roleIsActive'].hasError('required') &&
+                addRolesForm.controls['roleIsActive'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label>&nbsp; Handling Instructions  </label>
+                      <textarea trim="blur" class="form-control" formControlName="handlingInstructions" placeholder="Enter Handling Instructions" tabindex="3" maxlength="200"></textarea>
+                  </div>
+              </div>
+          </div> -->
+      <div class="row">
+        <div class="col-md-6"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        *ngIf="formForAdd"
+        [disabled]="!addRolesForm.valid || btnDisable"
+        style="background-color: #0f3d64"
+        class="btn text-white pull-right"
+        type="submit"
+        tabindex="6"
+      >
+        <i class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i
+          *ngIf="loading"
+          class="fa fa-refresh fa-spin"
+        ></i>
+      </button>
+      <!-- <button *ngIf="formForAdd" [disabled]="!addRolesForm.valid || btnDisable || isProductNameDuplicate" style="background-color: #576a3d;" class="btn text-white pull-right" type="submit" tabindex="4"><i
+                  class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i *ngIf="loading"
+                  class="fa fa-refresh fa-spin"></i></button> -->
+      <button
+        type="button"
+        (click)="againValidOnUpdate(addRolesForm.value)"
+        [disabled]="addRolesForm.pristine || btnDisable"
+        *ngIf="formForEdit"
+        style="background-color: #0f3d64"
+        class="btn text-white pull-right"
+      >
+        <i class=""></i>&nbsp;Update&nbsp;<i
+          *ngIf="loading"
+          class="fa fa-refresh fa-spin"
+        ></i>
+      </button>
+      <button
+        (click)="close()"
+        style="margin-right: 5px"
+        type="button"
+        class="btn btn-danger pull-right"
+
+        tabindex="7"
+      >
+        <i class="fa fa-close" aria-hidden="true"></i> Cancel
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" (click)="close()">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h6 class="text-black-50">Are you sure you want to delete this Product?</h6>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="deletePrd(selectedObj)"
+      [disabled]="btnDisable"
+    >
+      Delete
+    </button>
+  </div>
+</ng-template>

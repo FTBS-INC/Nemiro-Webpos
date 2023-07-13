@@ -1,0 +1,877 @@
+<div class="row">
+    <div class="col-12">
+      <h1>KYC Review</h1>
+      &nbsp;&nbsp;&nbsp;
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-8 text-left">
+      <div class="d-block d-md-inline-block">
+        <div class="input-group">
+          <input
+            #textSearch
+            type="text"
+            id="searchInput"
+            style="width: 220px"
+            class="form-control"
+            placeholder="Search"
+            data-provide="typeahead"
+            autocomplete="off"
+            (keyup)="onKeyUp($event.target.value)"
+            (keyup.enter)="search()"
+          
+          />
+          &nbsp;&nbsp;&nbsp;
+  
+          <!-- (onSelectAll)="onSelectAll($event)" -->
+  
+          <button type="submit" class="btn btn-primary ml-2" (click)="search()">
+            <i class="simple-icon-magnifier"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- <div class="col-2">
+  
+      </div> -->
+  
+    <!-- <div class="col-md-4 text-right">
+      <button
+        class="btn btn-primary"
+        (click)="openModalForAdd(templateAddUpdate)">
+        Add KYC Review
+      </button>
+    </div> -->
+  </div>
+  
+  <div class="separator mb-3"></div>
+  
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped text-center">
+              <thead>
+                <tr>
+                  <th class="text-left" scope="col">UserID</th>
+                  <th class="text-left" scope="col">FirstName</th>
+                   <th class="text-left" scope="col">LastName</th>
+                    <th class="text-left" scope="col">Email</th>
+                    <th class="text-left" scope="col">Status</th>
+                    <th class="text-centre" scope="col">Action</th>
+
+                   
+                </tr>
+              </thead>
+              <tbody>
+                <!-- change kyclist according to api -->
+                <!-- <tr  *ngFor="let kyc of kycList | paginate: {itemsPerPage: recordsPerPage, currentPage: p, totalItems: totalRecords}"> -->
+                 <tr> <td class="text-left">1234</td>
+                  <td class="text-left">John</td>
+                  <td class="text-left">Gordon</td>
+                  <td class="text-left">johngordon@gmail.com</td>
+                  <td class="text-left">Accepted</td>
+                  <td class="text-centre">
+                      <i
+                        (click)="openModal(userModal)"
+                        class="fa fa-edit cursor-pointer"
+                        style="color: #145388; font-size: 15px; cursor: pointer"
+                        aria-hidden="true"
+                      ></i> 
+              </td>
+
+                <!-- <td class="text-left">{{kyc.distributorCode}}</td>
+                <td class="text-left">{{kyc.distributorName}}</td>
+                <td class="text-left">{{kyc.distributorAddress}}</td>
+                <td class="text-left">{{kyc.email}}</td>
+                <td class="text-left">{{kyc.phoneNo}}</td>
+                <td class="text-left">{{kyc.ntn}}</td>
+                <td class="text-left">{{kyc.certificate}}</td>
+                <td class="text-left">{{kyc.website}}</td>
+                <td class="text-left">{{kyc.isActive}}</td> -->
+  
+                <!-- <td class="text-center">
+                  <i
+                    (click)="openModalForUpdate(kyc.distributorID, templateAddUpdate)"
+                    class="fa fa-edit cursor-pointer"
+                    style="color: #145388; font-size: 15px; cursor: pointer"
+                    aria-hidden="true"
+                  ></i>
+                  &nbsp;
+                  <i
+                    class="fa fa-trash-o cursor-pointer text-danger"
+                    style="font-size: 20px"
+                    aria-hidden="true"
+                    (click)="deleteAlert(kyc)"
+                  ></i
+                  >&nbsp;
+                </td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination-controls (pageChange)="pageChange((p = $event))"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div
+  bsModal
+  #userModal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="dialog-sizes-name1"
+>
+  <div class="modal-dialog modal-xl">
+    <!-- <div class="modal-header">
+      <h4
+        class="modal-title pull-left"
+        [innerHTML]="
+          _user_variables._userID === null ? 'Add User' : 'Edit User'
+        "
+      ></h4>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="closeUserModel(userModal)"
+      ><span aria-hidden="true">&times;</span>
+      </button>
+    </div> -->
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="mb-0">
+              <div class="card-body">
+                <div id="progressbarwizard">
+                  <ul
+                    class="nav nav-pills bg-light nav-justified form-wizard-header mb-3"
+                  >
+                    <li class="nav-item point mb-0">
+                      <a
+                        class="nav-link rounded-0 pt-2 pb-2"
+                        [ngClass]="{
+                          'active text-white': _user_variables._step === 1
+                        }"
+                      >
+                        <i class="mdi mdi-account-circle mr-1"></i>
+                        <span class="d-none d-sm-inline">Personal Info</span>
+                      </a>
+                    </li>
+                    <li class="nav-item point mb-0">
+                      <a
+                        class="nav-link rounded-0 pt-2 pb-2"
+                        [ngClass]="{
+                          'active text-white': _user_variables._step === 2
+                        }"
+                      >
+                        <i class="mdi mdi-face-profile mr-1"></i>
+                        <span class="d-none d-sm-inline">Media Info</span>
+                      </a>
+                    </li>
+                    <li class="nav-item point mb-0">
+                      <a
+                        class="nav-link rounded-0 pt-2 pb-2"
+                        [ngClass]="{
+                          'active text-white': _user_variables._step === 3
+                        }"
+                      >
+                        <i class="mdi mdi-face-profile mr-1"></i>
+                        <span class="d-none d-sm-inline">Remarks</span>
+                      </a>
+                    </li>
+                  </ul>
+                  <div class="tab-content b-0 mb-0 pt-0">
+                    <div id="bar" class="progress mb-3" style="height: 7px">
+                      <div
+                        class="bar progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                        [ngStyle]="{
+                          'width.%':
+                            _user_variables._step === 1
+                              ? '25'
+                              : _user_variables._step === 2
+                              ? '50'
+                              : _user_variables._step === 3
+                              ? '100'
+                              : ' '
+                        }"
+                      ></div>
+                    </div>
+                    <div>
+                      <div *ngIf="_user_variables._step === 1"
+                      class="tab-pane active"
+                      id="Personal-Info"
+                      >
+                      <form [formGroup]="userRegisterFormStep1" novalidate>
+                          <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label
+                                >First Name<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              
+                              <!-- <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              <div
+                                *ngIf="
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].hasError('required') &&
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].touched
+                                "
+                              >
+                                <h5
+                                  class="text-danger font-12 position-absolute"
+                                >
+                                  Required *
+                                </h5>
+                              </div> -->
+                            </div>
+                            <div class="form-group">
+                              <label
+                                >Address Line 1<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                trim="blur"
+                                type="email"
+                                formControlName="personalEmail"
+                                class="form-control"
+                                placeholder="Enter Personal Email"
+                                tabindex="4"
+                              />
+                              <!-- <input
+                                trim="blur"
+                                type="email"
+                                formControlName="personalEmail"
+                                class="form-control"
+                                placeholder="Enter Personal Email"
+                                tabindex="4"
+                              />
+                              <div
+                                *ngIf="
+                                  userRegisterFormStep2.controls[
+                                    'personalEmail'
+                                  ].hasError('required') &&
+                                  userRegisterFormStep2.controls[
+                                    'personalEmail'
+                                  ].touched
+                                "
+                              >
+                                <h5
+                                  class="text-danger font-12 position-absolute"
+                                >
+                                  Required *
+                                </h5>
+                              </div>
+                              <div
+                                *ngIf="
+                                  userRegisterFormStep2.controls[
+                                    'personalEmail'
+                                  ].hasError('pattern')
+                                "
+                              >
+                                <h5
+                                  class="text-danger font-12 position-absolute"
+                                >
+                                  Invalid email address
+                                </h5>
+                              </div> -->
+                            </div>
+                            <div class="form-group">
+                              <label
+                                >Country<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              
+                              <!-- <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              <div
+                                *ngIf="
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].hasError('required') &&
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].touched
+                                "
+                              >
+                                <h5
+                                  class="text-danger font-12 position-absolute"
+                                >
+                                  Required *
+                                </h5>
+                              </div> -->
+                            </div>
+                          </div>
+                  
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label
+                                >Middle Name<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              
+                              <!-- <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              <div
+                                *ngIf="
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].hasError('required') &&
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].touched
+                                "
+                              >
+                                <h5
+                                  class="text-danger font-12 position-absolute"
+                                >
+                                  Required *
+                                </h5>
+                              </div> -->
+                            </div>
+                            <div class="form-group">
+                              <label
+                                >Address Line 2<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              
+                              <!-- <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              <div
+                                *ngIf="
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].hasError('required') &&
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].touched
+                                "
+                              >
+                                <h5
+                                  class="text-danger font-12 position-absolute"
+                                >
+                                  Required *
+                                </h5>
+                              </div> -->
+                            </div>
+                            <div class="form-group">
+                              <label
+                                >City<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              
+                              <!-- <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              <div
+                                *ngIf="
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].hasError('required') &&
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].touched
+                                "
+                              >
+                                <h5
+                                  class="text-danger font-12 position-absolute"
+                                >
+                                  Required *
+                                </h5>
+                              </div> -->
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label
+                                >Last Name<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              
+                              <!-- <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              <div
+                                *ngIf="
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].hasError('required') &&
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].touched
+                                "
+                              >
+                                <h5
+                                  class="text-danger font-12 position-absolute"
+                                >
+                                  Required *
+                                </h5>
+                              </div> -->
+                            </div>
+                            <div class="form-group">
+                              <label
+                                >Phone No<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              
+                              <!-- <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              <div
+                                *ngIf="
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].hasError('required') &&
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].touched
+                                "
+                              >
+                                <h5
+                                  class="text-danger font-12 position-absolute"
+                                >
+                                  Required *
+                                </h5>
+                              </div> -->
+                            </div>
+                            <div class="form-group">
+                              <label
+                                >Zip Code<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              
+                              <!-- <input
+                                trim="blur"
+                                type="text"
+                                formControlName="firstName"
+                                class="form-control"
+                                placeholder="Enter First Name"
+                                tabindex="1"
+                              />
+                              <div
+                                *ngIf="
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].hasError('required') &&
+                                  userRegisterFormStep2.controls[
+                                    'firstName'
+                                  ].touched
+                                "
+                              >
+                                <h5
+                                  class="text-danger font-12 position-absolute"
+                                >
+                                  Required *
+                                </h5>
+                              </div> -->
+                            </div>
+                          </div>
+                          
+                          
+                          
+                        </div>
+                      </form>
+                      
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    <div>
+                      <div
+                        *ngIf="_user_variables._step === 2"
+                        class="tab-pane active"
+                        id="Contact-Info"
+                        (ngSubmit)="ClickNext()"
+                        (ngSubmit)="ClickPrevious()"
+                        novalidate
+                      >
+                        <form [formGroup]="userRegisterFormStep2" novalidate>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label
+                                  >User's Image<span class=""
+                                    >*</span
+                                  ></label
+                                >
+                                <div>   <img
+                                  class="d-block w-100 rounded-2 "
+                                  src="https://cdn.britannica.com/43/172743-138-545C299D/overview-Barack-Obama.jpg?w=800&h=450&c=crop"
+                                  width="200px"
+                                  height="240px"
+                                  (click)="openModal(userModal)"
+                                />
+                
+                               </div>
+                                           
+                                           
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label
+                                  >User ID Front<span class=""
+                                    >*</span
+                                  ></label
+                                >
+                                <div>   <img
+                                  class="d-block w-100 rounded-2"
+                                  src="https://m.media-amazon.com/images/I/51gEzqJp2dL._AC_SX425_.jpg"
+                                  width="200px"
+                                  height="240px"
+                                />
+                
+                               </div>
+                                           
+                                           
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label
+                                  >User Id Back<span class=""
+                                    >*</span
+                                  ></label
+                                >
+                                <div>   <img
+                                  class="d-block w-100 rounded-2"
+                                  src="https://m.media-amazon.com/images/I/51gEzqJp2dL._AC_SX425_.jpg"
+                                  width="200px"
+                                  height="240px"
+                                />
+                
+                               </div>
+                                           
+                                           
+                              </div>
+                            </div>
+                            
+                          </div>
+
+                          
+                        </form>
+                      </div>
+
+                      <div
+                        *ngIf="_user_variables._step === 3"
+                        class="tab-pane active"
+                        id="Contact-Info"
+                        (ngSubmit)="ClickPrevious()"
+                        novalidate
+                      >
+                        <form [formGroup]="userRegisterFormStep3" novalidate>
+                          <div class="row">
+                            <div class="d-block w-100 col-md-12">
+                              <div class="form-group">
+                                <label
+                                  >Role Remarks &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                                    *ngIf="isValidating"
+                                    style="color: #576a3d"
+                                    class="fa fa-refresh fa-spin"
+                                  ></i
+                                  ><i
+                                    *ngIf="isMarkCorrect"
+                                    style="color: #576a3d"
+                                    class="fa fa-check"
+                                    aria-hidden="true"
+                                  ></i
+                                ></label>
+                                <textarea
+                                  class="form-control"
+                                  trim="blur"
+                                  formControlName="roleRemarks"
+                                  placeholder="Enter Remarks"
+                                  tabindex="4"
+                                  maxlength="1000"
+                                >
+                                </textarea>
+                             
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label
+                                  >Status</label
+                                >
+                                <select
+                                 
+                                
+                                  class="form-control"
+
+                                  tabindex="4"
+                                >
+                                  <option [value]="null">Select Status</option>
+                                  <option
+                                  >
+                             Accepted
+                                  </option>
+                                  <option
+                                  >
+                            In progress
+                                  </option>
+                                  <option
+                                  >
+                             Rejected
+                                  </option>
+                                </select>
+                               
+                              </div>
+                            </div>
+                          </div>
+
+                          
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="row w-100">
+          <div class="col-12 col-md-6">
+            <p class="text-danger">{{ APILoader }}</p>
+          </div>
+          <div class="col-12 col-md-6">
+            <ul class="list-inline mb-0" *ngIf="_user_variables._step === 1">
+              <li class="next list-inline-item float-right">
+                <button
+                  class="btn btn-outline-danger"
+                  (click)="closeUserModel(userModal)"
+                >
+                  Cancel
+                </button>
+                &nbsp;
+                <div role="group" class="btn-group" aria-label="Basic">
+                  <button
+                    [disabled]="_user_variables._step === 1"
+                    (click)="ClickPrevious()"
+                    class="btn btn-primary mr-1"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    [disabled]="!userRegisterFormStep1.valid"
+                    (click)="ClickNext()"
+                  >
+                    Next
+                  </button>
+                </div>
+              </li>
+            </ul>
+            <ul class="list-inline mb-0" *ngIf="_user_variables._step === 2">
+              <li class="next list-inline-item float-right">
+                <button
+                  class="btn btn-outline-danger"
+                  (click)="closeUserModel(userModal)"
+                >
+                  Cancel
+                </button>
+                &nbsp;
+                <div role="group" class="btn-group" aria-label="Basic">
+                  <button
+                  *ngIf="_user_variables._step === 2"
+                    (click)="ClickPrevious()"
+                    class="btn btn-primary mr-1"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    [disabled]="!userRegisterFormStep1.valid"
+                    (click)="ClickNext()"
+                  >
+                    Next
+                  </button>
+                </div>
+              </li>
+            </ul>
+            <ul class="list-inline mb-0" *ngIf="_user_variables._step === 3">
+              <li class="next list-inline-item float-right">
+                <button
+                  class="btn btn-outline-danger"
+                  (click)="closeUserModel(userModal)"
+                >
+                  Cancel
+                </button>
+                &nbsp;
+                <div role="group" class="btn-group" aria-label="Basic">
+                  <button
+                    *ngIf="_user_variables._step === 3"
+                    (click)="ClickPrevious()"
+                    class="btn btn-primary mr-1"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    *ngIf="_user_variables._step === 3"
+                 
+                    (click)="submitForm(userModal)"
+                    class="btn btn-primary text-light"
+                  >Submit</button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <!-- <ng-template #delete>
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Delete Distributers</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" (click)="close()">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h6 class="text-black-50">Are you sure you want to delete this Distributers?</h6>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="deletePrd(selectedObj)"
+        [disabled]="btnDisable"
+      >
+        Delete
+      </button>
+    </div>
+  </ng-template> -->
+  
+  

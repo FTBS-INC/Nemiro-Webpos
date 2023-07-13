@@ -1,0 +1,337 @@
+
+.hr-line {
+    width: 100% !important;
+    position: relative !important;
+    margin: 7px !important;
+    border-bottom: 1px solid #ffffff !important;
+    margin-bottom: 3px;
+    
+  }
+
+  
+
+  $breakpoints: (
+    xxs: 420px,
+    xs: 576px,
+    sm: 768px,
+    md: 1024px,
+    lg: 1280px,
+    xl: 1440px,
+    xxl: 1920px,
+    xxxl: 2560px
+  );
+  
+  @mixin respond-below($breakpoint) {
+  
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+  @mixin respond-above($breakpoint) {
+    // If the breakpoint exists in the map.
+    @if map-has-key($breakpoints, $breakpoint) {
+      // Get the breakpoint value.
+      $breakpoint-value: map-get(
+        $breakpoints,
+        $breakpoint
+      ); // Write the media query.
+      @media (min-width: ($breakpoint-value - 1)) {
+        @content;
+      }
+      // If the breakpoint doesn't exist in the map.
+    } @else {
+      // Log a warning.
+      @warn "Invalid breakpoint: #{$breakpoint}.";
+    }
+  }
+  .container-wrapper {
+    margin: 3rem;
+    @include respond-above(sm) {
+  margin: 0.5rem;
+    }
+    @include respond-above(md) {
+      margin: 0.75rem;
+    }
+    @include respond-above(lg) {
+      margin: 1.5rem;
+    }
+    @include respond-above(xl) {
+      margin: 2.5rem;
+    }
+    @include respond-above(xxl) {
+      margin: 3rem;
+      // margin-top: 4rem;
+    }
+  }
+  h1 {
+    font-size: 1.5rem !important;
+    padding-bottom: 10px !important;
+    display: inline-block !important;
+    @include respond-above(xs) {
+      font-size: 0.8rem !important;
+      padding-top: 0.5rem !important;
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+   @include respond-above(sm) {
+      font-size: 0.98rem !important;
+      padding-top: 0.5rem !important;
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+     @include respond-above(md) {
+      font-size: 1.3rem !important;
+      padding-top: 0.5rem !important;
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    @include respond-above(lg) {
+      font-size: 1.6rem !important;
+      padding-top: 0.5rem !important;
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    @include respond-above(xl) {
+      font-size: 1.8rem !important;
+      padding-top: 0.5rem !important;
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    @include respond-above(xxl) {
+      font-size: 2.4rem !important;
+      padding-top: 0.5rem !important;
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    @include respond-above(xxxl) {
+      font-size: 3rem !important;
+      padding-top: 0.5rem !important;
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+  }
+  p{
+    font-size: 1rem !important;
+    padding-bottom: 0px !important;
+    // display: inline-block !important;
+    @include respond-above(xs) {
+      font-size: 0.3rem !important;
+      text-align: left;
+      line-height: 0.25rem;
+      // padding-top: 0.5rem !important;
+      // margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    @include respond-above(sm) {
+      font-size: 0.7rem !important;
+      text-align: left;
+      line-height: 0.6rem;
+      // padding-top: 0.5rem !important;
+      // margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+     @include respond-above(md) {
+      font-size: 0.86rem !important;
+      text-align: left;
+      line-height: 0.8rem;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    @include respond-above(lg) {
+      font-size: 1rem !important;
+      text-align: left;
+      line-height: 1.2rem;
+      padding-top: 0.5rem !important;
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    @include respond-above(xl) {
+      font-size: 1.2rem !important;
+      text-align: left;
+      line-height: 1.5rem;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    @include respond-above(xxl) {
+      font-size: 1.7rem !important;
+      text-align: left;
+      line-height: 1.7rem;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    @include respond-above(xxxl) {
+      font-size: 3rem !important;
+      padding-top: 0.5rem !important;
+      margin-top: 0.25rem !important;
+      margin-bottom: 0.25rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+  }
+  
+  .logo-footer {
+    width: 110px !important;
+    height: 40px !important;
+    @include respond-above(sm) {
+      width: 60px !important;
+    height: 15px !important;
+    margin-bottom: 0.75rem;
+    }
+    @include respond-above(md) {
+      width: 80px !important;
+    height: 30px !important;
+    margin-bottom: 1rem;
+    }
+    @include respond-above(lg) {
+      width: 100px !important;
+    height: 40px !important;
+    }@include respond-above(xl) {
+      width: 180px !important;
+    height: 50px !important;
+    }@include respond-above(xxl) {
+      width: 240px !important;
+    height: 140px !important;
+    }@include respond-above(xxxl) {
+      width: 110px !important;
+    height: 40px !important;
+    }
+}
+#navText{
+  padding-top: 1rem !important;
+  font-size: 1rem !important;
+  @include respond-above(sm) {
+    padding-top: 1rem !important;
+    font-size: 1rem !important;
+    padding-left: 1.2rem;
+  }
+  @include respond-above(md) {
+    padding-top: 1rem !important;
+    font-size: 1rem !important;
+    padding-left: 1.25rem;
+  }
+  @include respond-above(lg) {
+    padding-top: 1rem !important;
+    font-size: 1.25rem !important;
+    padding-left: 1.25rem;
+  }
+}
+
+.card .card-body {
+  padding: 1.75rem;
+  @include respond-above(sm) {
+    padding: 0.75rem;
+  }
+  @include respond-above(md) {
+    padding: 1.25rem;
+  }
+  @include respond-above(lg) {
+    padding: 1.5rem;
+  }
+  @include respond-above(xl) {
+    padding: 1.75rem;
+  }
+  @include respond-above(xxl) {
+    padding: 2rem;
+  }
+}
+
+h5 {
+  font-size: 1.1rem ;
+  @include respond-above(sm) {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  @include respond-above(md) {
+    font-size: 1rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  @include respond-above(lg) {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  @include respond-above(xl) {
+    font-size: 1.75rem !important;
+    margin-bottom: 1rem !important;
+  }
+}
+
+.form{
+  margin-top: 1rem !important;
+  @include respond-above(sm) {
+    margin-top: 0.25rem !important;
+  }
+}
+.form-group{
+  margin-bottom: 1rem !important;
+  @include respond-above(sm) {
+    margin-bottom: 0.25rem !important;
+    
+  }
+  @include respond-above(md) {
+    margin-bottom: 0.5rem !important;
+  }
+  @include respond-above(lg) {
+    margin-bottom: 1rem !important;
+  }
+  @include respond-above(xl) {
+    margin-bottom: 1.5rem !important;
+  }
+}
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  @include respond-above(sm) {
+    display: inline-block !important;
+  margin-bottom: 0.1rem !important;
+  font-size: 0.5rem;
+  }
+  @include respond-above(md) {
+    display: inline-block !important;
+  margin-bottom: 0.5rem !important;
+  font-size: 0.75rem;
+  }
+  @include respond-above(lg) {
+    display: inline-block !important;
+  margin-bottom: 0.75rem !important;
+  font-size: 1rem;
+  }
+  @include respond-above(xl) {
+    display: inline-block !important;
+  margin-bottom: 1rem !important;
+  font-size: 1.3rem;
+  }
+}
+.text-danger{
+  font-size: 0.5rem !important;
+  @include respond-above(sm) {
+    font-size: 0.3rem !important;
+  }
+  @include respond-above(md) {
+    font-size: 0.5rem !important;
+  }
+  @include respond-above(lg) {
+    font-size: 0.5rem !important;
+  }
+  @include respond-above(lg) {
+    font-size: 1rem !important;
+  }
+}
+
+// .navbar {
+//   height: 100px !important;
+//   @include respond-above(sm) {
+//     height: l0px !important;
+//   }
+// }
+// main{
+//   margin: 100px;
+// }

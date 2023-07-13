@@ -1,0 +1,979 @@
+<div class="row">
+  <div class="col-12">
+    <h1>User Management</h1>
+    &nbsp;&nbsp;&nbsp;
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-md-8 text-left">
+    <div class="d-block d-md-inline-block">
+      <div class="input-group">
+        <input
+          type="text"
+          id="searchText"
+          style="width: 220px"
+          class="form-control"
+          [(ngModel)]="UI.searchString"
+          (keyup)="searchUser()"
+          placeholder="Search"
+          data-provide="typeahead"
+          autocomplete="off"
+        />
+        &nbsp;&nbsp;&nbsp;
+
+        <!-- (onSelectAll)="onSelectAll($event)" -->
+
+        <button type="submit" class="btn btn-primary ml-2">
+          <i class="simple-icon-magnifier"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-2">
+
+    </div> -->
+
+  <div class="col-md-4 text-right">
+    <button class="btn btn-primary" (click)="openModal(userModal)">
+      Add User
+    </button>
+  </div>
+</div>
+<div class="separator mb-5"></div>
+<div class="row">
+  <div class="col-12 text-right"></div>
+</div>
+<div class="row flex-column-reverse flex-md-row">
+  <div class="col-md-12 col-xl-12 overflow-auto vh-70">
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped text-center">
+                <thead>
+                  <tr>
+                    <th class="text-left" scope="col">Name</th>
+                    <th class="text-left" scope="col">Email</th>
+                    <th class="text-left" scope="col">Phone</th>
+                    <th class="text-left" scope="col">City</th>
+                    <th class="text-left" scope="col">State</th>
+                    <th class="text-left" scope="col">Status</th>
+                    <th class="text-center" scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                
+                    <td class="text-left">Fintech</td>
+                    <td class="text-left">ftbs@gmail.com</td>
+                    <td class="text-left">0300-89007800</td>
+                    <td class="text-left">Berlin</td>
+                    <td class="text-left">Germany</td>
+                    <td class="text-left">Active</td>
+                    <td class="text-center">
+                      <i
+                        (click)="editModal(userModal, users)"
+                        class="fa fa-edit cursor-pointer"
+                        style="color: #145388; font-size: 15px; cursor: pointer"
+                        aria-hidden="true"
+                      ></i>
+                      &nbsp;
+                      <i
+                        class="fa fa-trash-o cursor-pointer text-danger"
+                        style="font-size: 20px"
+                        aria-hidden="true"
+                        (click)="deleteAlert(users)"
+                      ></i
+                      >&nbsp;
+                    </td>
+                
+                </tbody>
+              
+                <tbody>
+                  <tr *ngFor="let Users of users">
+                    <td class="text-left">{{ Users.name }}</td>
+
+                    <td class="text-left">{{ Users.isActive | Status }}</td>
+                    <td class="text-center">
+                      <i
+                        (click)="editModal(userModal, users)"
+                        class="fa fa-edit cursor-pointer"
+                        style="color: #145388; font-size: 15px; cursor: pointer"
+                        aria-hidden="true"
+                      ></i>
+                      &nbsp;
+                      <i
+                        class="fa fa-trash-o cursor-pointer text-danger"
+                        style="font-size: 20px"
+                        aria-hidden="true"
+                        (click)="deleteAlert(users)"
+                      ></i
+                      >&nbsp;
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Tiles -->
+    <!-- <div class="row" *ngIf="users.length !== 0; else noRecord">
+      <div
+        class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 mb-2"
+        *ngFor="let item of users"
+      >
+        <div class="card d-flex flex-row">
+          <div
+            class="position-absolute card-top-buttons p-1"
+            dropdown
+            placement="right"
+          >
+            <button
+              [title]="item.isSameUser ? 'This user logged in' : ''"
+              type="button"
+              [ngClass]="item.isSameUser ? 'text-primary' : 'btn-header-light'"
+              class="btn icon-button"
+              dropdownToggle
+            >
+              <i
+                [ngClass]="
+                  item.isSameUser
+                    ? 'simple-icon-lock'
+                    : 'simple-icon-options-vertical'
+                "
+              ></i>
+            </button>
+            <div *ngIf="!item.isSameUser">
+              <div
+                class="dropdown-menu dropdown-menu-right mt-3"
+                *dropdownMenu
+                role="menu"
+              >
+                <a
+                  class="dropdown-item c-pointer"
+                  (click)="editModal(userModal, item)"
+                  >Edit</a
+                >
+                <a class="dropdown-item c-pointer" (click)="deleteUser(item)"
+                  >Delete</a
+                >
+              </div>
+            </div>
+          </div>
+          <a class="d-flex">
+            <div
+              class="rounded-circle m-2 align-self-center list-thumbnail-letters text-capitalize"
+            >
+              {{ item.empName.substr(0, 1) }}
+            </div>
+          </a>
+          <div class="d-flex flex-grow-1 min-width-zero">
+            <div
+              class="card-body pl-0 align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero"
+            >
+              <div class="min-width-zero">
+                <a>
+                  <p class="list-item-heading mb-1" [title]="item.empName">
+                    {{ item.empName }}
+                  </p>
+                </a>
+                <p class="mb-2 text-muted text-small">
+                  
+                  Created On: {{ item.createDate | date: "MMM-dd-yyyy" }}
+                </p>
+                <p class="mb-2 text-muted text-small">
+                  Role: {{ item.roleNames }}
+                </p>
+                <p
+                  class="mb-2 text-small"
+                  [ngClass]="item.isActive ? 'text-success' : 'text-danger'"
+                  [innerHtml]="
+                    item.isActive === false
+                      ? 'Inactive'
+                      : item.isActive === true
+                      ? 'Active'
+                      : ''
+                  "
+                ></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <ng-template #noRecord>
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h5 class="card-title text-muted">
+            {{ UI.loaderText }}
+          </h5>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <!-- <div class="col-md-4 col-xl-3">
+    <div class="col-md-12 p-1" *ngFor="let tile of _user_variables._tilesList">
+      <div class="card mb-4 progress-banner" (click)="showList(tile)">
+        <div class="card-body p-3">
+          <div
+            class="d-flex flex-row justify-content-between align-items-center text-white"
+          >
+            <i class="iconsminds-male m-2"></i>
+            <div class="pl-3 flex-fill">
+              <p class="lead mb-0">{{ tile.name }}</p>
+            </div>
+            <div>
+              <span class="lead">{{ tile.value }}</span>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div> -->
+  <!-- <ng-template #userModal> -->
+  <div
+    bsModal
+    #userModal="bs-modal"
+    class="modal fade"
+    [config]="{ backdrop: 'static' }"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="dialog-sizes-name1"
+  >
+    <div class="modal-dialog modal-xl">
+
+      <!-- Modal -->
+      <!-- <div class="modal-header">
+        <h4
+          class="modal-title pull-left"
+          [innerHTML]="
+            _user_variables._userID === null ? 'Add User' : 'Edit User'
+          "
+        ></h4>
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="closeUserModel(userModal)"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="mb-0">
+                <div class="card-body">
+                  <div id="progressbarwizard">
+                    <ul
+                      class="nav nav-pills bg-light nav-justified form-wizard-header mb-3"
+                    >
+                      <li class="nav-item point mb-0">
+                        <a
+                          class="nav-link rounded-0 pt-2 pb-2"
+                          [ngClass]="{
+                            'active text-white': _user_variables._step === 1
+                          }"
+                        >
+                          <i class="mdi mdi-account-circle mr-1"></i>
+                          <span class="d-none d-sm-inline">User Info</span>
+                        </a>
+                      </li>
+                      <li class="nav-item point mb-0">
+                        <a
+                          class="nav-link rounded-0 pt-2 pb-2"
+                          [ngClass]="{
+                            'active text-white': _user_variables._step === 2
+                          }"
+                        >
+                          <i class="mdi mdi-face-profile mr-1"></i>
+                          <span class="d-none d-sm-inline">Employee Info</span>
+                        </a>
+                      </li>
+                    </ul>
+                    <div class="tab-content b-0 mb-0 pt-0">
+                      <div id="bar" class="progress mb-3" style="height: 7px">
+
+                        <!-- Progress Bar -->
+                        <div
+                          class="bar progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                          [ngStyle]="{
+                            'width.%':
+                              _user_variables._step === 1
+                                ? '50'
+                                : _user_variables._step === 2
+                                ? '100'
+                                : ' '
+                          }"
+                        ></div>
+
+                      </div>
+                      <form
+                        [formGroup]="userRegisterFormStep1"
+                        autocomplete="off"
+                        (ngSubmit)="ClickNext()"
+                      
+
+                      >
+                      <!-- (ngSubmit)="ClickNext()"
+                        novalidate -->
+                        <div
+                          *ngIf="_user_variables._step === 1"
+                          class="tab-pane active"
+                          id="Personal-Info"
+                        > 
+                          <div class="row">
+                        
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label
+                                  >Role<span
+                                    class="text-danger"
+                                    *ngIf="
+                                      userRegisterFormStep1.controls.userID
+                                        .value === -1
+                                    "
+                                    >*
+                                  </span></label
+                                >
+                                <select
+                                  (change)="changeRole()"
+                                  formControlName="roleIDs"
+                                  class="form-control"
+                                  tabindex="1"
+                                >
+                                  <option [value]="null">Select Role</option>
+                                  <option
+                                    [value]="r.roleID"
+                                    *ngFor="let r of formDropDowns.roles"
+                                  >
+                                    {{ r.name }}
+                                  </option>
+                                </select>
+                                <div
+                                  *ngIf="
+                                    userRegisterFormStep1.controls[
+                                      'roleIDs'
+                                    ].hasError('required') &&
+                                    userRegisterFormStep1.controls['roleIDs']
+                                      .touched
+                                  "
+                                >
+                                  <h5
+                                    class="text-danger font-12 position-absolute"
+                                  >
+                                    Required *
+                                  </h5>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label
+                                  >Email<span class="text-danger"
+                                    >*
+                                  </span></label
+                                >
+                                <input
+                                  trim="blur"
+                                  type="text"
+                                  formControlName="userName"
+                                  [readOnly]="
+                                    userRegisterFormStep1.controls.userID
+                                      .value > -1
+                                  "
+                                  class="form-control"
+                                  placeholder="Enter Email"
+                                  tabindex="2"
+                                />
+                                <div
+                                  *ngIf="
+                                    userRegisterFormStep1.controls[
+                                      'userName'
+                                    ].hasError('required') &&
+                                    userRegisterFormStep1.controls['userName']
+                                      .touched
+                                  "
+                                >
+                                  <h5
+                                    class="text-danger font-12 position-absolute"
+                                  >
+                                    Required *
+                                  </h5>
+                                </div>
+                                <div
+                                  *ngIf="
+                                    userRegisterFormStep1.controls[
+                                      'userName'
+                                    ].hasError('pattern') &&
+                                    userRegisterFormStep1.controls['userName']
+                                      .dirty &&
+                                    !userRegisterFormStep1.controls[
+                                      'userName'
+                                    ].hasError('required')
+                                  "
+                                >
+                                  <h5
+                                    class="text-danger font-12 position-absolute"
+                                  >
+                                    Email is not valid
+                                  </h5>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label
+                                  >Password<span
+                                    class="text-danger"
+                                    *ngIf="
+                                      userRegisterFormStep1.controls.userID
+                                        .value === -1
+                                    "
+                                    >*
+                                  </span></label
+                                >
+                                <div class="input-group">
+                                  <!-- Change input type to be dynamic -->
+                                  <input
+                                  formControlName="password"
+                                  name="fakepasswordremembered"
+                                  autocomplete="new-password"
+                                  [type]="fieldTextType ? 'text' : 'password'"
+                                  class="form-control"
+                                  placeholder="Enter Password"
+                                  tabindex="3"
+                                />
+                                <div class="input-group-append">
+                                  <span class="input-group-text">
+                                    <i
+                                      class="fa"
+                                      [ngClass]="{
+                                        'fa-eye-slash': !fieldTextType,
+                                        'fa-eye': fieldTextType
+                                      }"
+                                      (click)="toggleFieldTextType()"
+                                    ></i>
+                                  </span>
+                                </div>
+                              
+                                </div>
+                           
+                                
+           
+                                <div
+                                  *ngIf="
+                                    userRegisterFormStep1.controls[
+                                      'password'
+                                    ].hasError('required') &&
+                                    userRegisterFormStep1.controls['password']
+                                      .touched &&
+                                    userRegisterFormStep1.controls.userID
+                                      .value === -1
+                                  "
+                                >
+                                  <h5
+                                    class="text-danger font-12 position-absolute"
+                                  >
+                                    Required *
+                                  </h5>
+                                </div>
+                                <div
+                                  *ngIf="
+                                    userRegisterFormStep1.controls[
+                                      'password'
+                                    ].hasError('pattern')
+                                  "
+                                >
+                                  <span
+                                    class="text-danger font-12 position-relative"
+                                    >Use 8 or more characters with a combination
+                                    of letters , capital letters, special
+                                    characters & numbers</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label>Status</label>
+                                <div class="custom-control custom-switch">
+                                  <input
+                                    trim="blur"
+                                    type="checkbox"
+                                    formControlName="isActive"
+                                    class="custom-control-input"
+                                    id="customSwitch1"
+                                    tabindex="5"
+                                  />
+                                  <label
+                                    class="custom-control-label"
+                                    for="customSwitch1"
+                                    [innerHTML]="
+                                      userRegisterFormStep1.value.isActive ===
+                                      true
+                                        ? 'Active'
+                                        : 'Inactive'
+                                    "
+                                  ></label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      <div>
+                        <div
+                          *ngIf="_user_variables._step === 2"
+                          class="tab-pane active"
+                          id="Contact-Info"
+                        >
+                          <form [formGroup]="userRegisterFormStep2" novalidate>
+                            <div class="row">
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label
+                                    >First Name<span class="text-danger"
+                                      >*</span
+                                    ></label
+                                  >
+                                  <input
+                                    trim="blur"
+                                    type="text"
+                                    formControlName="firstName"
+                                    class="form-control"
+                                    placeholder="Enter First Name"
+                                    tabindex="1"
+                                  />
+                                  <div
+                                    *ngIf="
+                                      userRegisterFormStep2.controls[
+                                        'firstName'
+                                      ].hasError('required') &&
+                                      userRegisterFormStep2.controls[
+                                        'firstName'
+                                      ].touched
+                                    "
+                                  >
+                                    <h5
+                                      class="text-danger font-12 position-absolute"
+                                    >
+                                      Required *
+                                    </h5>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label
+                                    >Personal Email<span class="text-danger"
+                                      >*</span
+                                    ></label
+                                  >
+                                  <input
+                                    trim="blur"
+                                    type="email"
+                                    formControlName="personalEmail"
+                                    class="form-control"
+                                    placeholder="Enter Personal Email"
+                                    tabindex="4"
+                                  />
+                                  <div
+                                    *ngIf="
+                                      userRegisterFormStep2.controls[
+                                        'personalEmail'
+                                      ].hasError('required') &&
+                                      userRegisterFormStep2.controls[
+                                        'personalEmail'
+                                      ].touched
+                                    "
+                                  >
+                                    <h5
+                                      class="text-danger font-12 position-absolute"
+                                    >
+                                      Required *
+                                    </h5>
+                                  </div>
+                                  <div
+                                    *ngIf="
+                                      userRegisterFormStep2.controls[
+                                        'personalEmail'
+                                      ].hasError('pattern')
+                                    "
+                                  >
+                                    <h5
+                                      class="text-danger font-12 position-absolute"
+                                    >
+                                      Invalid email address
+                                    </h5>
+                                  </div>
+                                </div>
+                                <!-- <div class="form-group">
+                                  <label> Phone Ext. </label>
+                                  <input trim="blur" type="phone" formControlName="phoneExt" class="form-control"
+                                    placeholder="Enter Phone Ext" />
+                                </div> -->
+                              </div>
+                              <!-- <div class="col-md-4 text-center">
+                                <img (click)=" callFileUpload( 'inputGroupFile01')"
+                                  [src]="formDropDowns.imageSrc !== '' ? formDropDowns.imageSrc : 'assets/img/no-image-selected.png'"
+                                  class="customImage cursor-pointer">
+                                <div class="custom-file w-100 mx-auto d-block mt-c4 mb-2">
+                                  <input trim="blur" type="file" accept="image/*" (change)="imageConvert($event)"
+                                    title="Select Image" class="custom-file-input" id="inputGroupFile01">
+                                  <label class="custom-file-label " for="inputGroupFile01 "
+                                    [innerHTML]="formDropDowns.fileName !=='' ? formDropDowns.fileName : 'Select Image'"></label>
+                                </div>
+                              </div> -->
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Last Name</label>
+                                  <input
+                                    trim="blur"
+                                    type="text"
+                                    formControlName="lastName"
+                                    class="form-control"
+                                    placeholder="Enter Last Name"
+                                    tabindex="2"
+                                  />
+                                </div>
+                                <div class="form-group">
+                                  <label
+                                    >Professional Email<span class="text-danger"
+                                      >*</span
+                                    ></label
+                                  >
+                                  <input
+                                    trim="blur"
+                                    type="email"
+                                    readonly
+                                    formControlName="professionalEmail"
+                                    class="form-control"
+                                    placeholder="Enter Professional Email"
+                                    tabindex="5"
+                                  />
+                                  <div
+                                    *ngIf="
+                                      userRegisterFormStep2.controls[
+                                        'professionalEmail'
+                                      ].hasError('required') &&
+                                      userRegisterFormStep2.controls[
+                                        'professionalEmail'
+                                      ].touched
+                                    "
+                                  >
+                                    <h5
+                                      class="text-danger font-12 position-absolute"
+                                    >
+                                      Required *
+                                    </h5>
+                                  </div>
+                                  <div
+                                    *ngIf="
+                                      userRegisterFormStep2.controls[
+                                        'professionalEmail'
+                                      ].hasError('pattern')
+                                    "
+                                  >
+                                    <h5
+                                      class="text-danger font-12 position-absolute"
+                                    >
+                                      Invalid email address
+                                    </h5>
+                                  </div>
+                                </div>
+
+                                <!-- <div class="form-group" formGroupName="designation">
+                                  <label><span class="text-danger">*</span> Designation </label>
+                                  <select formControlName="designationID" class="form-control">
+                                    <option value="-1">Select Designation</option>
+                                    <option [value]="item.designationID"
+                                      *ngFor="let item of formDropDowns.designations">{{item.desinationName}}</option>
+                                  </select>
+                                  <div *ngIf="
+                                  userRegisterFormStep2['controls'].designation['controls'].designationID.hasError('required') &&
+                                  userRegisterFormStep2['controls'].designation['controls'].designationID.touched">
+                                    <h5 class="text-danger font-12 position-absolute">Required *</h5>
+                                  </div>
+                                </div> -->
+                              </div>
+                              <!-- <div class="col-md-4">
+                                <div class="form-group">
+                                  <label> Fax Number</label>
+                                  <input trim="blur"  type="phone" formControlName="faxNo" class="form-control"
+                                    placeholder="xxxxxxxxxxx" />
+                                </div>
+                              </div> -->
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label
+                                    >Mobile Phone<span class="text-danger"
+                                      >*</span
+                                    ></label
+                                  >
+                                  <input
+                                    trim="blur"
+                                    type="phone"
+                                    formControlName="mobilePhone"
+                                    class="form-control"
+                                    placeholder="Enter Mobile Phone"
+                                    tabindex="3"
+                                  />
+                                  <div
+                                    *ngIf="
+                                      userRegisterFormStep2.controls[
+                                        'mobilePhone'
+                                      ].hasError('required') &&
+                                      userRegisterFormStep2.controls[
+                                        'mobilePhone'
+                                      ].touched
+                                    "
+                                  >
+                                    <h5
+                                      class="text-danger font-12 position-absolute"
+                                    >
+                                      Required *
+                                    </h5>
+                                  </div>
+                                  <div
+                                    *ngIf="
+                                      userRegisterFormStep2.controls[
+                                        'mobilePhone'
+                                      ].hasError('pattern')
+                                    "
+                                  >
+                                    <h5
+                                      class="text-danger font-12 position-absolute"
+                                    >
+                                      Invalid phone number
+                                    </h5>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label
+                                    >Work Phone<span class="text-danger"
+                                      >*</span
+                                    ></label
+                                  >
+                                  <input
+                                    trim="blur"
+                                    type="phone"
+                                    formControlName="workPhone"
+                                    class="form-control"
+                                    placeholder="Enter Work Phone"
+                                    tabindex="6"
+                                  />
+                                  <div
+                                    *ngIf="
+                                      userRegisterFormStep2.controls[
+                                        'workPhone'
+                                      ].hasError('required') &&
+                                      userRegisterFormStep2.controls[
+                                        'workPhone'
+                                      ].touched
+                                    "
+                                  >
+                                    <h5
+                                      class="text-danger font-12 position-absolute"
+                                    >
+                                      Required *
+                                    </h5>
+                                  </div>
+                                </div>
+                               
+                              </div>
+                            
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Country</label>
+                                   <select
+                                    name="country"
+                                    list="countrylist"
+                                    formControlName="country"
+                                    ng-model="usercountry"
+                                    class="form-control"
+                                    tabindex="7"
+                                    placeholder
+                                  >
+                                    <option disabled selected [value]="null">
+                                      Select Country
+                                    </option>
+                                    <!-- <option [value]="item.id" *ngFor="let item of UI">{{item.name}}
+                                    </option> -->
+                                    <option>Pakistan</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>State</label>
+                                  <select
+                                    name="state"
+                                    formControlName="state"
+                                    class="form-control"
+                                    tabindex="8"
+                                  >
+                                    <option disabled selected [value]="null">Select State</option>
+                                    
+                                    <option>Punjab</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>City</label>
+                                  <select
+                                    name="city"
+                                    formControlName="city"
+                                    class="form-control"
+
+                                    tabindex="9"
+                                  >
+                                    <option disabled selected [value]="null">Select City</option>
+                                    
+                                    <option>Islamabad</option>
+                                    <option>Lahore</option>
+                                    <option>Karachi</option>
+                                    <option>Faisalabad</option>
+                                  </select>
+                                 
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label> Zip Code</label>
+                                  <input
+                                    trim="blur"
+                                    type="text"
+                                    formControlName="zip"
+                                    class="form-control"
+                                    placeholder="Enter ZIP Code"
+                                    tabindex="10"
+                                  />
+                                  <div
+                                    *ngIf="
+                                      userRegisterFormStep2.controls[
+                                        'zip'
+                                      ].hasError('required') &&
+                                      userRegisterFormStep2.controls['zip']
+                                        .touched
+                                    "
+                                  >
+                                    <h5
+                                      class="text-danger font-12 position-absolute"
+                                    >
+                                      Required *
+                                    </h5>
+                                  </div>
+                                  <div
+                                    *ngIf="
+                                      userRegisterFormStep2.controls[
+                                        'zip'
+                                      ].hasError('pattern')
+                                    "
+                                  >
+                                    <h5
+                                      class="text-danger font-12 position-absolute"
+                                    >
+                                      Invalid zip code *
+                                    </h5>
+                                  </div>
+                                </div>
+                              </div>
+
+                            
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row w-100">
+            <div class="col-12 col-md-6">
+              <p class="text-danger">{{ APILoader }}</p>
+            </div>
+            <div class="col-12 col-md-6">
+              <ul class="list-inline mb-0" *ngIf="_user_variables._step === 1">
+                <li class="next list-inline-item float-right">
+                  <button
+                    class="btn btn-outline-danger"
+                    (click)="closeUserModel(userModal)"
+                  >
+                    Cancel
+                  </button>
+                  &nbsp;
+                  <div role="group" class="btn-group" aria-label="Basic">
+                    <button
+                   
+                      class="btn btn-primary mr-1"
+                    >
+                    <!--    [disabled]="_user_variables._step === 1"
+                      (click)="ClickPrevious()" -->
+                      Previous
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="ClickNext()"
+                    >
+                    <!-- [disabled]="!userRegisterFormStep1.valid"
+                      (click)="ClickNext()"  -->
+                      Next
+                    </button>
+                  </div>
+                </li>
+              </ul>
+              <ul class="list-inline mb-0" *ngIf="_user_variables._step === 2">
+                <li class="next list-inline-item float-right">
+                  <button
+                    class="btn btn-outline-danger"
+                    (click)="closeUserModel(userModal)"
+                  >
+                    Cancel
+                  </button>
+                  &nbsp;
+                  <div role="group" class="btn-group" aria-label="Basic">
+                    <button
+                      *ngIf="_user_variables._step === 2"
+                      (click)="ClickPrevious()"
+                      class="btn btn-primary mr-1"
+                    >
+                      Previous
+                    </button>
+                    <button
+                    (click)="submitForm(userModal)"
+                      class="btn btn-primary text-light"
+                    > Submit
+                    <!--  *ngIf="_user_variables._step === 2"
+                      [disabled]="
+                        !userRegisterFormStep2.valid ||
+                        _user_variables._buttonDisabled
+                      "
+                      [innerHTML]="
+                        userRegisterFormStep1.controls.userID.value === -1
+                          ? 'Create'
+                          : 'Update'
+                      "
+ -->
+                  </button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </ng-template> -->
+</div>

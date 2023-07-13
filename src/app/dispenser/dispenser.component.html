@@ -1,0 +1,204 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-12">
+      <div class="panel panel-default" style="border:2px solid #000;">
+        <div class="panel-body">
+          <div class="row">
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <div class="panel panel-default" style="border:2px solid #000;min-height: 730px;">
+                <div class="panel-heading"
+                  style="background-color: #9BC2E6; color: #000;font-weight: 600;text-align: center;border-color: #000;">
+                  Treats Pharmacy(Dispenser)</div>
+                <div class="panel-heading"
+                  style="background-color: #548235; color: #fff;text-align: center;border-color: #000;">ORDERS IN QUEUE
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="table-responsive">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th style="font-size: 14px;font-weight: 600;text-align: center;">Order </th>
+                              <th style="font-size: 14px;font-weight: 600;text-align: center;">Invoice No</th>
+                              <th style="font-size: 14px;font-weight: 600;text-align: center;">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of invoiceList; let i = index">
+                              <td style="text-align: left;">{{i + 1}}</td>
+                              <td style="text-align: center;">{{item.sales.invoiceNo}}</td>
+                              <td style="text-align: center;"><button type="button" class="btn btn-success"
+                                style="margin-top: 0px;" (click)="pushToArray(item)">Pick</button></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="panel panel-default" style="border:2px solid #000;min-height: 426px">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <!-- <img src="assets/img/clock.jpg" class="img-responsive"> -->
+                      <p style="font-weight: 600;text-align: center;font-size: 30px;margin-bottom: 0px;"> 15:05:36</p>
+                      <p style="font-weight: 600;text-align: center;">
+                        Friday December 20,2019
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div style="background-color: #000;">
+                        <div class="panel-heading"
+                          style="text-align: center;color:#00B04F; border-color:transparent;background-color: transparent;font-weight: 600;">
+                          Processing Time</div>
+                        <p style="font-weight: 600;text-align: center;font-size: 30px;color:#00B04F;">
+                          {{ getDateTime() }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-12" style="text-align: center;">
+                          <button (click)="Complete()" type="button" class="btn btn-success" style="width: 100%;padding: 13px;"><span
+                              style="font-weight: 600;font-size: 20px;">DONE</span></button>
+                        </div>
+                      </div>
+                      <!-- <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12" style="text-align: center;">
+                          <button type="button" class="btn btn-warning" style="width: 100%;padding: 13px;"><span
+                              style="font-weight: 600;font-size: 20px;">HOLD</span></button>
+                        </div>
+                      </div> -->
+                      <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12" style="text-align: center;">
+                          <button (click)="Terminate()" type="button" class="btn btn-danger" style="width: 100%;padding: 13px;"><span
+                              style="font-weight: 600;font-size: 20px;">CANCEL</span></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-body" style="padding: 0px 15px 13px;padding-bottom: 4px;">
+                  <div class="row">
+                    <div class="col-md-12" style="text-align: center;">
+                      <a style="vertical-align: sub; cursor: pointer; color: red;" (click)='openModal(confirmLogout)'>
+                        <i class="fa fa-power-off" aria-hidden="true"></i>
+                        <span style="font-weight: bold;"> Logout</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-8 col-lg-9">
+              <div class="panel panel-default" style="min-height: 1696px;border:2px solid #000;">
+                <div class="panel-heading"
+                  style="color: #fff;background-color: #203764;border-color: #000;font-weight: 700;font-size:20px;text-align: center;">
+                  INVOICE NUMBER : {{ currentInvoice }} (Normal Priority)</div>
+                <div class="panel-body">
+                  <div class="panel panel-default" style="margin-bottom: 0px;">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="table-responsive">
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th style="font-size: 15px;font-weight: 600;text-align: center;">Sr</th>
+                                  <th style="font-size: 15px;font-weight: 600;text-align: center;">Shelf</th>
+                                  <th style="font-size: 15px;font-weight: 600;text-align: center;">Rack</th>
+                                  <th style="font-size: 15px;font-weight: 600;text-align: center;">Item </th>
+                                  <th style="font-size: 15px;font-weight: 600;text-align: center;">Potency</th>
+                                  <th style="font-size: 15px;font-weight: 600;text-align: center;">Type</th>
+                                  <th style="font-size: 15px;font-weight: 600;text-align: center;">Qty</th>
+                                  <th style="font-size: 15px;font-weight: 600;text-align: center;">Total</th>
+                                  <!-- <th style="font-size: 15px;font-weight: 600;text-align: center;">Issue</th>
+                                  <th style="font-size: 15px;font-weight: 600;text-align: center;">Packed</th> -->
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let order of currentOrderList; let i = index">
+                                  <td style="text-align: center;">{{ i + 1 }}</td>
+                                  <td style="text-align: center;">{{order.shelf}}</td>
+                                  <td style="text-align: center;">{{order.rack}}</td>
+                                  <td style="text-align: center;">{{order.productName}}</td>
+                                  <td style="text-align: center;">{{order.potency}}</td>
+                                  <td style="text-align: center;">{{order.generic}}</td>
+                                  <td style="text-align: center;">{{order.units}}</td>
+                                  <td style="text-align: center;">{{order.totalPrice}}</td>
+                                  <!-- <td>
+                                    <div class="form-check" style="text-align: center;">
+                                      <input type="checkbox" class="form-check-input" id="materialUnchecked">
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="form-check" style="text-align: center;">
+                                      <input type="checkbox" class="form-check-input" id="materialUnchecked">
+                                    </div>
+                                  </td> -->
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                            <!-- <button
+                              style="background-color: #ff0000"
+                              class="btn text-white pull-right"
+                              type="button"
+                              tabindex="4"
+                              (click)='Terminate()'
+                            >
+                              <i class="fa fa-trash"></i>&nbsp;Terminate&nbsp;
+                            </button>
+                            <button
+                              style="background-color: #548235; margin-right: 5px"
+                              class="btn text-white pull-right"
+                              type="button"
+                              tabindex="4"
+                              (click)='Complete()'
+                            >
+                              <i class="fa fa-play"></i>&nbsp;Complete&nbsp;
+                            </button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #confirmLogout>
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Confirmation</h4>
+      <button type="button" class="close pull-right plus" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <span>Are you sure you want to log out?</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="modalRef.hide()">Cancel</button>
+      <button type="button" class="btn btn-success" (click)="logout()">Confirm</button>
+    </div>
+  </div>
+</ng-template>

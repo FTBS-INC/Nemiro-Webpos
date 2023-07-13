@@ -1,0 +1,20 @@
+.panel .panel-body {
+    border: 0 none;
+    padding: 15px 15px 15px;
+}
+.panel-heading {
+    padding: 10px 15px;
+   
+}
+.panel-default {
+    border-color: #000;
+}
+.table>tbody>tr>td{
+    border-top: 1px solid transparent;
+}
+.table{
+    margin-bottom: 0px;
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #e4e4e4;
+}

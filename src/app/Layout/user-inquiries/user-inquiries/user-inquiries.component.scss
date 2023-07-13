@@ -1,0 +1,10 @@
+@import 'ag-grid-community/dist/styles/ag-grid.css';
+@import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center !important;
+    margin-right: 15px !important;
+    margin-left: 35px !important;
+}

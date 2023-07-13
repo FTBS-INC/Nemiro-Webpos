@@ -1,0 +1,570 @@
+<div class="row">
+  <div class="col-12">
+    <h1>Consultant</h1>
+    &nbsp;&nbsp;&nbsp;
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-md-8 text-left">
+    <div class="d-block d-md-inline-block">
+      <div class="input-group">
+        <input
+          #textSearch
+          type="text"
+          id="searchInput"
+          style="width: 220px"
+          class="form-control"
+          placeholder="Search"
+          data-provide="typeahead"
+          autocomplete="off"
+          (keyup)="onKeyUp($event.target.value)"
+          (keyup.enter)="search()"
+        />
+        &nbsp;&nbsp;&nbsp;
+
+        <!-- (onSelectAll)="onSelectAll($event)" -->
+
+        <button type="submit" class="btn btn-primary ml-2" (click)="search()">
+          <i class="simple-icon-magnifier"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-2">
+
+    </div> -->
+
+  <div class="col-md-4 text-right">
+    <button
+      class="btn btn-primary"
+      (click)="openModalForAdd(templateAddUpdate)"
+    >
+      Add Consultant
+    </button>
+  </div>
+</div>
+
+<div class="separator mb-3"></div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">Image</th>
+                <th class="text-center" scope="col">License No.</th>
+                <th class="text-center" scope="col">Name</th>
+                <th class="text-center" scope="col">Age</th>
+                <th class="text-center" scope="col">Qualification</th>
+                <th class="text-center" scope="col">Expertise</th>
+                <th class="text-center" scope="col">Phone No.</th>
+                <th class="text-center" scope="col">Status</th>
+                <th class="text-center" scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let con of consultantList
+                    | paginate
+                      : {
+                          itemsPerPage: recordsPerPage,
+                          currentPage: p,
+                          totalItems: totalRecords
+                        }
+                "
+              >
+                <td class="text-center"><img
+                  class="rounded-circle"
+                  src="{{con.image}}"
+                  width="50px"
+                  height="50px"
+                /></td>
+                <td class="d-flex justify-content-center">{{ con.licenseNo }}</td>
+                <td class="text-centre">{{ con.consultantName }}</td>
+                <td class="text-centre">{{ con.consultantAge }}</td>
+                <td class="text-centre">{{ con.qualification }}</td>
+                <td class="text-centre">{{ con.expertise }}</td>
+                <td class="text-centre">{{ con.phoneNo }}</td>
+                <td class="text-centre">{{ con.isActive | Status}}</td>
+
+                <td id="table" class="text-center">
+                  <i
+                    (click)="
+                      openModalForUpdate(con.consultantID, templateAddUpdate)
+                    "
+                    class="fa fa-edit cursor-pointer"
+                    style="color: #145388; font-size: 15px; cursor: pointer"
+                    aria-hidden="true"
+                  ></i>
+                  &nbsp;
+                  <i
+                    class="fa fa-trash-o cursor-pointer text-danger"
+                    style="font-size: 20px"
+                    aria-hidden="true"
+                    (click)="deleteAlert(con)"
+                  ></i
+                  >&nbsp;
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateAddUpdate>
+  <form
+    [formGroup]="addConsultantForm"
+    (ngSubmit)="againValidOnAdd(addConsultantForm.value)"
+    novalidate
+  >
+    <div
+      class="modal-header"
+      style="background-color: #0f3d64; border-radius: 0px"
+    >
+      <span
+        *ngIf="formForEdit"
+        class="modal-title"
+        style="color: #fff; font-size: 18px"
+      >
+        Edit Consultant</span
+      >
+      <span
+        *ngIf="formForAdd"
+        class="modal-title"
+        style="color: #fff; font-size: 18px"
+      >
+        Add Consultant</span
+      >
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="modalRef.hide()"
+        style="color: #fff"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <div *ngIf="consultantImage" class="text-center">
+              <img
+              class="rounded"
+              [src]="consultantImage"
+              width="100px"
+              height="100px"
+            />
+            </div>
+          </div>
+        </div>
+    
+      </div>
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label
+              >Upload Image &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              type="file"
+              accept="image/png, image/gif, image/jpeg, image/jpg"
+              (change)="onChange($event)"
+              class="form-control"
+              formControlName="consultantImage"
+              placeholder="Choose Image"
+              (keyup)="setUpdateBtn()"
+              tabindex="1"
+            />
+            <div
+              *ngIf="
+                addConsultantForm.controls['consultantImage'].hasError(
+                  'required'
+                ) && addConsultantForm.controls['consultantImage'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >License No &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="consultantLicenceNo"
+                placeholder="Enter License Number"
+                tabindex="2"
+                maxlength="30"
+                (keyup)="setUpdateBtn()"
+              />
+              <div
+                *ngIf="
+                  addConsultantForm.controls['consultantLicenceNo'].hasError(
+                    'required'
+                  ) && addConsultantForm.controls['consultantLicenceNo'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <!-- <div *ngIf="isConsultantNameDuplicate" class="text-danger">
+                This Consultant already exists, please try different one
+              </div> -->
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >Consultant Name &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="consultantName"
+                placeholder="Enter Consultant Name"
+                tabindex="3"
+                maxlength="30"
+                (keyup)="setUpdateBtn()"
+              />
+              <div
+                *ngIf="
+                  addConsultantForm.controls['consultantName'].hasError(
+                    'required'
+                  ) && addConsultantForm.controls['consultantName'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <div *ngIf="isConsultantNameDuplicate" class="text-danger">
+                This Consultant already exists, please try different one
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >Consultant Age &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="consultantAge"
+                placeholder="Enter Consultant Age"
+                tabindex="4"
+                maxlength="30"
+                (keyup)="setUpdateBtn()"
+              />
+              <div
+                *ngIf="
+                  addConsultantForm.controls['consultantAge'].hasError(
+                    'required'
+                  ) && addConsultantForm.controls['consultantAge'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <div *ngIf="isConsultantNameDuplicate" class="text-danger">
+                This Consultant already exists, please try different one
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >Qualification &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="consultantQualification"
+                placeholder="Enter Consultant Qualification"
+                tabindex="5"
+                maxlength="30"
+                (keyup)="setUpdateBtn()"
+              />
+              <div
+                *ngIf="
+                  addConsultantForm.controls['consultantQualification'].hasError(
+                    'required'
+                  ) &&
+                  addConsultantForm.controls['consultantQualification'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <!-- <div *ngIf="isConsultantNameDuplicate" class="text-danger">
+                This Consultant already exists, please try different one
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >Expertise &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="consultantExpertise"
+                placeholder="Enter Consultant Expertise"
+                tabindex="6"
+                maxlength="30"
+                (keyup)="setUpdateBtn()"
+              />
+              <div
+                *ngIf="
+                  addConsultantForm.controls['consultantExpertise'].hasError(
+                    'required'
+                  ) && addConsultantForm.controls['consultantExpertise'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <!-- <div *ngIf="isConsultantNameDuplicate" class="text-danger">
+                This Consultant already exists, please try different one
+              </div> -->
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >Phone No &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="consultantPhoneNo"
+                placeholder="Enter Phone No"
+                tabindex="7"
+                maxlength="30"
+                (keyup)="setUpdateBtn()"
+              />
+              <div
+                *ngIf="
+                  addConsultantForm.controls['consultantPhoneNo'].hasError(
+                    'required'
+                  ) && addConsultantForm.controls['consultantPhoneNo'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <!-- <div *ngIf="isConsultantNameDuplicate" class="text-danger">
+                This Consultant already exists, please try different one
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="text-left">
+              <div class="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  [checked]="consultantCheck"
+                  (change)="consultantCheck = !consultantCheck"
+                  formControlName="consultantisActive"
+                  value=""
+                  id="consultantisActive"
+                  tabindex="8"
+                />
+                <label
+                  class="custom-control-label"
+                  for="consultantisActive"
+                  [innerHTML]="
+                    addConsultantForm.value.consultantisActive === true
+                      ? 'Active'
+                      : 'Inactive'
+                  "
+                >
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="modal-footer">
+      <button
+        style="background-color: #0f3d64"
+        *ngIf="formForAdd"
+         [disabled]="!addConsultantForm.valid || btnDisable"
+        class="btn text-white pull-right"
+        type="submit"
+        tabindex="9"
+      >
+        <i class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i
+          *ngIf="loading"
+          class="fa fa-refresh fa-spin"
+        ></i>
+      </button>
+      <!-- <button *ngIf="formForAdd" [disabled]="!addCategoryForm.valid || btnDisable || isConsultantNameDuplicate" style="background-color: #576a3d;" class="btn text-white pull-right" type="submit" tabindex="4"><i
+                  class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i *ngIf="loading"
+                  class="fa fa-refresh fa-spin"></i></button> -->
+      <button
+        type="button"
+        (click)="againValidOnUpdate(addConsultantForm.value)"
+        *ngIf="formForEdit"
+        style="background-color: #0f3d64"
+        class="btn text-white pull-right"
+        [disabled]="addConsultantForm.pristine || btnDisable"
+      >
+        <i class="fa fa-save saveIcon"></i>&nbsp;Update&nbsp;<i
+          *ngIf="loading"
+          class="fa fa-refresh fa-spin"
+        ></i>
+      </button>
+      <button
+        (click)="close()"
+        style="margin-right: 5px"
+        type="button"
+        class="btn btn-danger pull-right"
+        tabindex="10"
+      >
+        <i class="fa fa-close" aria-hidden="true"></i> Cancel
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Delete Consultant</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" (click)="close()">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h6 class="text-black-50">
+      Are you sure you want to delete this Consultant?
+    </h6>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="deletePrd(selectedObj)"
+      [disabled]="btnDisable"
+    >
+      Delete
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #prescriptionTemplate>
+  <div class="modal-header"
+  style="background-color: #0f3d64; border-radius: 0px">
+  <span
+  class="modal-title"
+  style="color: #fff; font-size: 18px">Prescription</span>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()" style="color: #fff">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="consultantImage" class="text-center">
+      <img
+      [src]="consultantImage"
+      width="400px"
+      height="500px"
+    />
+    </div>
+  </div>
+</ng-template>

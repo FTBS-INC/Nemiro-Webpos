@@ -1,0 +1,382 @@
+<div class="row">
+  <div class="col-12">
+    <h1>Users</h1>
+    &nbsp;&nbsp;&nbsp;
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-md-8 text-left">
+    <div class="d-block d-md-inline-block">
+      <div class="input-group">
+        <input
+          #textSearch
+          type="text"
+          id="searchText"
+          style="width: 220px"
+          class="form-control"
+          placeholder="Search"
+          data-provide="typeahead"
+          autocomplete="off"
+        />
+        &nbsp;&nbsp;&nbsp;
+
+        <!-- (onSelectAll)="onSelectAll($event)" -->
+
+        <button type="submit" class="btn btn-primary ml-2">
+          <i class="simple-icon-magnifier"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-2">
+
+    </div> -->
+
+  <div class="col-md-4 text-right">
+    <button
+      class="btn btn-primary"
+      (click)="openModalForAdd(templateAddUpdate)"
+    >
+      Create User
+    </button>
+  </div>
+</div>
+
+<div class="separator mb-3"></div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th class="text-left" scope="col">ID</th>
+                <th class="text-left" scope="col">Name</th>
+                <th class="text-left" scope="col">Email</th>
+                <th class="text-left" scope="col">Role</th>
+                <th class="text-left" scope="col">Status</th>
+
+                <th class="text-center" scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <td class="text-left">1</td>
+              <td class="text-left">Ali</td>
+              <td class="text-left">alimehdi@gmail.com</td>
+              <td class="text-left">Consultant</td>
+
+              <td class="text-left"><!-- Default switch -->
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="customSwitches">
+                  <label class="custom-control-label" for="customSwitches"></label>
+                </div></td>
+
+              <td class="text-center">
+                <i
+                  (click)="openModalForUpdate(1, templateAddUpdate)"
+                  class="fa fa-edit cursor-pointer"
+                  style="color: #145388; font-size: 15px; cursor: pointer"
+                  aria-hidden="true"
+                ></i>
+                &nbsp;
+                <i
+                  class="fa fa-trash-o cursor-pointer text-danger"
+                  style="font-size: 20px"
+                  aria-hidden="true"
+                  (click)="deleteAlert()"
+                ></i
+                >&nbsp;
+              </td>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateAddUpdate>
+  <form (ngSubmit)="againValidOnAdd(addCategoryForm.value)" novalidate>
+    <div
+      class="modal-header"
+      style="background-color: #0f3d64; border-radius: 0px"
+    >
+      <span
+        *ngIf="formForEdit"
+        class="modal-title"
+        style="color: #fff; font-size: 18px"
+        >Edit User</span
+      >
+      <span
+        *ngIf="formForAdd"
+        class="modal-title"
+        style="color: #fff; font-size: 18px"
+        >Add User</span
+      >
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="modalRef.hide()"
+        style="color: #fff"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <!-- <div class="col-md-12">
+                  <div class=" form-group">
+                      <label>Category Code &nbsp;<span class="text-danger">*</span>&nbsp;<i ngIf="isValidating" style="color: #576a3d;" class="fa fa-refresh fa-spin"></i><i ngIf = "isMarkCorrect" style="color: #576a3d;" class="fa fa-check" aria-hidden="true"></i></label>
+                      <input class="form-control" trim="blur" formControlName="categoryCode" placeholder="Enter Category Code" (focusout)="checkProductName($event.target.value)" tabindex="1" maxlength="30"/>
+                      <div *ngIf="addCategoryForm.controls['categoryCode'].hasError('required') && addCategoryForm.controls['categoryCode'].touched" class="text-danger">Required</div>
+                      <div *ngIf="isProductNameDuplicate" class="text-danger">This user already exists, please try different one</div>
+                  </div>
+              </div> -->
+        <!-- <div class="col-md-6" style="margin-top: 40px;">
+                  <input class="align-middle" type="checkbox" id="perishable" name="perishable" formControlName="peri" tabindex="2">
+                  <label for="perishable">&nbsp;  Perishable  </label>
+              </div> -->
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label
+              >User Name &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="categoryCode"
+              placeholder="Enter User Name"
+              tabindex="1"
+              maxlength="30"
+            />
+            <div
+              *ngIf="
+                addCategoryForm.controls['categoryName'].hasError('required') &&
+                addCategoryForm.controls['productName'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <div *ngIf="isProductNameDuplicate" class="text-danger">
+              This user already exists, please try different one
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-6" style="margin-top: 40px;">
+                <input class="align-middle" type="checkbox" id="perishable" name="perishable" formControlName="peri" tabindex="2">
+                <label for="perishable">&nbsp;  Perishable  </label>
+            </div> -->
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label
+              >User Email &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="categoryCode"
+              placeholder="Enter User Email"
+              tabindex="1"
+              maxlength="30"
+            />
+            <div
+              *ngIf="
+                addCategoryForm.controls['categoryName'].hasError('required') &&
+                addCategoryForm.controls['productName'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <div *ngIf="isProductNameDuplicate" class="text-danger">
+              This email already exists, please try different one
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label
+              >User Role &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <div mdbDropdown class="dropdown">
+              <button
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                aria-expanded="false"
+                mdbDropdownToggle
+              >
+                Select Roles
+              </button>
+              <ul
+                mdbDropdownMenu
+                class="dropdown-menu"
+                aria-labelledby="dropdownMenuButton"
+              >
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label
+              >User Status &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <div class="custom-control custom-switch">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                id="customSwitches"
+              />
+              <label class="custom-control-label" for="customSwitches"
+                >Active/InActive</label
+              >
+            </div>
+            <div
+              *ngIf="
+                addCategoryForm.controls['categoryName'].hasError('required') &&
+                addCategoryForm.controls['productName'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label>&nbsp; Handling Instructions  </label>
+                      <textarea trim="blur" class="form-control" formControlName="handlingInstructions" placeholder="Enter Handling Instructions" tabindex="3" maxlength="200"></textarea>
+                  </div>
+              </div>
+          </div> -->
+      <div class="row">
+        <div class="col-md-6"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        style="background-color: #0f3d64"
+        class="btn text-white pull-right"
+        type="submit"
+        tabindex="4"
+      >
+        <i class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i
+          *ngIf="loading"
+          class="fa fa-refresh fa-spin"
+        ></i>
+      </button>
+      <!-- <button *ngIf="formForAdd" [disabled]="!addCategoryForm.valid || btnDisable || isProductNameDuplicate" style="background-color: #576a3d;" class="btn text-white pull-right" type="submit" tabindex="4"><i
+                  class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i *ngIf="loading"
+                  class="fa fa-refresh fa-spin"></i></button> -->
+      <button
+        type="button"
+        (click)="againValidOnUpdate(addCategoryForm.value)"
+        *ngIf="formForEdit"
+        [disabled]="
+          !addCategoryForm.valid || btnDisable || isProductNameDuplicate
+        "
+        style="background-color: #576a3d"
+        class="btn text-white pull-right"
+      >
+        <i class="fa fa-save saveIcon"></i>&nbsp;Update&nbsp;<i
+          *ngIf="loading"
+          class="fa fa-refresh fa-spin"
+        ></i>
+      </button>
+      <button
+        (click)="close()"
+        style="margin-right: 5px"
+        type="button"
+        class="btn btn-danger pull-right"
+      >
+        <i class="fa fa-close" aria-hidden="true"></i> Cancel
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" (click)="close()">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h6 class="text-black-50">Are you sure you want to delete this Product?</h6>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="deletePrd(selectedObj)"
+      [disabled]="btnDisable"
+    >
+      Delete
+    </button>
+  </div>
+</ng-template>

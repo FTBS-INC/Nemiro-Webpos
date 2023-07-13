@@ -1,0 +1,302 @@
+<!-- <div class="fixed-background" style="opacity: 1;"></div> -->
+<div style=" display: flex; justify-content: center; align-items: center;height: 100%;">
+<nav class="navbar navbar-expand-md fixed-top navbar-border">
+  <div class="d-flex d-inline-block align-items-center navbar-left">
+    <a href="/" class="navbar-logo" style="padding-left:40px" ><span class="logo-login d-none d-sm-block d-xs-block"></span></a>
+      <!-- <p class="ml-4 ml-sm-0 mb-0 text-center font-weight-bold text-uppercase" style="font-size: 30px; color: #270235;">
+  W E B P O S
+</p> -->
+<p
+       id="navText" class="ml-n4 mb-0 text-center font-weight-bold text-uppercase navText" style=" color: #270235; ">
+      W E B P O S
+    </p>
+  </div>
+ 
+  <div class="text-center font-weight-bold d-flex align-items-center navbar-center">
+  </div>
+  <div class="d-flex ml-auto align-items-center  justify-content-end navbar-right">
+    <div class="header-icons d-inline-block align-middle">
+      <div class="user d-inline-block"> 
+        <button class="header-icon btn btn-empty d-none d-sm-inline-block" style="color: #270235;" type="button" id="fullScreenButton"
+        (click)="fullScreenClick()">
+        <i *ngIf="!isFullScreen" class="simple-icon-size-fullscreen"></i>
+        <i *ngIf="isFullScreen" class="simple-icon-size-actual"></i>
+      </button>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container-wrapper">
+  <main class="container-fluid">
+    <div class="row justify-content-center flex-wrap h-100">
+      <div class="col-12 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 col-xxl-8  mx-auto order-2 order-md-1">
+        <h1 class="text-uppercase font-weight-bold text-justify" style=" color: white;">Transforming Point of Sales for Modern Businesses</h1>
+        <div class="row d-flex mb-0">
+          <div class="col-md-4 mx-auto order-2 order-md-1">
+            <div class="login-Mask w-150 w-md-75 mr-4"></div>
+          </div>
+          
+            <div class="col-md-4 mx-auto order-1 order-md-2 text-left" >
+              <p class="font-weight-medium" style=" padding-left: 40px; color: white;">Welcome to Nemiro WEBPOS, where we are transforming the point of sales experience for modern businesses. <br><br> With our innovative features, we empower businesses to streamline their transactions, boost productivity, and elevate customer satisfaction. <br><br> Simplify your transactions with seamless fund management, effortless redemption, and personalized customer inquiries.</p>
+          
+            </div>
+        </div>
+</div> 
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 mx-auto order-1 order-xs-2 order-sm-2 order-md-2 order-lg-2 order-xl-2">
+      <div class="card flex-fill">
+        <div class="card-body align-items-center">
+              <div class="logo-footer text-right"></div>
+          <div class="form"
+          style="margin-top: 1rem; color: #270235;"
+          *ngIf="_login_variables._visibleModule===''">
+            <h5 class="text-left font-weight-bold">Log In</h5>
+            <form [formGroup]="_loginForm" (ngSubmit)="submitForm(_loginForm.value)" novalidate>
+              <div class="form-group">
+                <label
+                >UserName</label>
+                <div class="input-group" >
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="simple-icon-user"></i></span>
+                  </div>
+                  <input formControlName="username"  style="color: #270235;" class="form-control" type="username" placeholder="Enter Username">
+                </div>
+                <div *ngIf="_loginForm.controls['username'].hasError('required') && _loginForm.controls['username'].touched">
+                  <h5 class="text-danger font-12">Required *</h5>
+                </div>
+                <!-- <div *ngIf="_loginForm.controls['email'].hasError('pattern') && _loginForm.controls['email'].dirty && !_loginForm.controls['email'].hasError('required')">
+                  <h5 class="text-danger font-12">Email is not valid!</h5>
+                </div> -->
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="simple-icon-lock"></i></span>
+                  </div>
+                  <input formControlName="password" name="fakepasswordremembered"
+                  autocomplete="new-password"
+                  [type]="fieldTextType ? 'text' : 'password'"  style="color: #270235;" class="form-control" type="password" placeholder="Enter Password">
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <i
+                        class="fa"
+                        [ngClass]="{
+                          'fa-eye-slash': !fieldTextType,
+                          'fa-eye': fieldTextType
+                        }"
+                        (click)="toggleFieldTextType()"
+                      ></i>
+                    </span>
+                  </div>
+                </div>
+                <div *ngIf="_loginForm.controls['password'].hasError('required') && _loginForm.controls['password'].touched">
+                  <h5 class="text-danger font-12">Required *</h5>
+                </div>
+              </div>
+              <div class="form-group mb-0 text-center">
+                <app-state-button id="loginButton" btnClass="btn btn-primary"   [currentState]="_login_variables._buttonState" [isDisabled]="(_login_variables._buttonDisabled || !_loginForm.valid)">Log In</app-state-button>
+              </div>
+              <div class="text-center mt-3">
+                <p class="text-muted ml-1" style=" text-align: center !important; color: #270235;">Forgot your
+                  <!-- <u>
+                    <a href="javascript:void(0)" (click)="forgotCredential('email')">username/email</a>
+                  </u> or -->
+                  <u>
+                    <a href="javascript:void(0)" style="
+                    text-align: center !important;
+                      color: #270235;" (click)="forgotCredential('password')">password</a>
+                  </u>?
+                </p>
+              </div>
+            </form>
+          </div>
+    
+          <!-- Recover Password Screen -->
+          <div class="form-side" style=" color: #270235;" *ngIf="_login_variables._visibleModule==='module_forgotPass'">
+            <h5 class="mb-4 text-center font-weight-bold">Recover Password</h5>
+            <div class="text-center w-75 m-auto">
+              <p class="mb-2 mt-2">Enter your username and we'll send you an email with OTP to
+                reset your password.</p>
+            </div>
+            <form novalidate [formGroup]="_recoverEmail" (ngSubmit)="sendEmail(_recoverEmail.value)">
+              <div class="form-group ">
+                <label>UserName</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="iconsminds-envelope-2"></i></span>
+                  </div>
+                  <input formControlName="username" style=" color: #270235;" class="form-control" type="text" placeholder="Enter UserName">
+  
+                </div>
+                <div
+                  *ngIf="_recoverEmail.controls['username'].hasError('required') && _recoverEmail.controls['username'].touched">
+                  <h5 class="text-danger font-12 ">Required *</h5>
+                </div>
+                <!-- <div
+                  *ngIf="_recoverEmail.controls['email'].hasError('pattern')  && _recoverEmail.controls['email'].dirty && !_recoverEmail.controls['email'].hasError('required')">
+                  <h5 class="text-danger font-12 ">Email is not valid!</h5>
+                </div> -->
+              </div>
+              <div class="form-group mb-0 text-center">
+                <button class="btn btn-primary"  style="background-color: #680D94; border-color:#680D94; color: white; font-size: larger;" [disabled]="!_recoverEmail.valid" type="submit"> Send Email/SMS
+                </button>
+              </div>
+            </form>
+            <div class="text-center mt-3">
+              <p style="text-align:center !important;">
+                <u>
+                  <a (click)="forgotCredential()" class="text-muted ml-1" href="javascript:void(0)" >
+                    Back to Login
+                  </a>
+                </u>
+              </p>
+            </div>
+           
+          </div>
+
+          <!-- Reset Password Screen -->
+          <div class="form-side" *ngIf="_login_variables._visibleModule==='module_resetPass'">
+            <h5 class="mb-1 text-center font-weight-bold">Set New Password</h5>
+            <!-- <div class="text-center w-75 m-auto">
+                <p class="text-muted mb-2 mt-2">Enter a .</p>
+              </div> -->
+            <form [formGroup]="_setNewPassword" (ngSubmit)="resetPassword(_setNewPassword.value)" novalidate>
+              <div class="form-group ">
+                <label>OTP</label>
+                <div class="input-group mb-1">
+                  <input type="text" maxlength="4" required formControlName="otp" class="form-control" placeholder="Enter One-Time-Password">
+                </div>
+                
+                
+              </div>
+              <div class="form-group ">
+                <label>Password</label>
+                <div class="input-group mb-1">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="simple-icon-lock"></i></span>
+                  </div>
+                  <input type="password" name="fakepasswordremembered"
+                  autocomplete="new-password"
+                  [type]="fieldTextType ? 'text' : 'password'" formControlName="password" class="form-control" placeholder="Enter Password">
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <i
+                        class="fa"
+                        [ngClass]="{
+                          'fa-eye-slash': !fieldTextType,
+                          'fa-eye': fieldTextType
+                        }"
+                        (click)="toggleFieldTextType()"
+                      ></i>
+                    </span>
+                  </div>
+                </div>
+                <div
+                  *ngIf="_setNewPassword.controls['password'].hasError('required') && _setNewPassword.controls['password'].touched">
+                  <h5 class="text-danger font-12 ">Required *</h5>
+                </div>
+                <div *ngIf="_setNewPassword.controls['password'].hasError('pattern')">
+  
+                  <h5 class="text-danger font-12 ">Use 8 or more characters with a
+                    combination of letters , capital
+                    letters, special
+                    characters & numbers</h5>
+                </div>
+              </div>
+              <div class="form-group ">
+                <label>Confirm password</label>
+                <div class="input-group mb-1">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="simple-icon-lock"></i></span>
+                  </div>
+                  <input type="password" name="fakepasswordremembered"
+                  autocomplete="new-password"
+                  [type]="fieldTextType ? 'text' : 'password'" formControlName="confirmPassword" class="form-control"
+                    placeholder="Enter Password Again">
+                    <div class="input-group-append">
+                      <span class="input-group-text">
+                        <i
+                          class="fa"
+                          [ngClass]="{
+                            'fa-eye-slash': !fieldTextType,
+                            'fa-eye': fieldTextType
+                          }"
+                          (click)="toggleFieldTextType()"
+                        ></i>
+                      </span>
+                    </div>
+                </div>
+                <div
+                  *ngIf="_setNewPassword.value.password !== _setNewPassword.value.confirmPassword && _setNewPassword.controls['confirmPassword'].hasError('required') && _setNewPassword.controls['confirmPassword'].touched">
+                  <h5 class="text-danger font-12 ">Required *</h5>
+                </div>
+                <div
+                  *ngIf="_setNewPassword.value.password !== _setNewPassword.value.confirmPassword && _setNewPassword.controls['confirmPassword'].touched && !_setNewPassword.controls['confirmPassword'].hasError('required')">
+                  <h5 class="text-danger font-12 ">Password and confirm password must be same</h5>
+                </div>
+              </div>
+              <div class="form-group mb-0 text-center">
+                <button class="btn btn-primary" style="background-color: #680D94; border-color:#680D94; color: white; font-size: larger;"
+                  [disabled]="!_setNewPassword.valid || (_setNewPassword.value.password !== _setNewPassword.value.confirmPassword && _setNewPassword.value.otp !== '')">
+                  Reset Password
+                </button>
+              </div>
+            </form>
+            <div class="text-center mt-1">
+              <p style="text-align:center !important;">
+                <u>
+                  <a (click)="forgotCredential()" class="text-muted ml-1" href="javascript:void(0)" >
+                    Back to Login
+                  </a>
+                </u>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+
+
+</main>
+</div>
+
+<footer>
+  <div class="footer-content">
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="navbar navbar-expand-md fixed-bottom navbar-border" style="padding-left: 45px ;">
+          <div class="d-flex align-items-center navbar-left">
+            
+            <div class="ml-4 mb-0 text-center font-weight-bold text-uppercase">
+              <a href="https://nemiro.app/how-it-works" target="_blank" style="color: #270235;">HOW IT WORKS</a>
+            </div>
+            <div class="vr"></div>
+            <div class="ml-4 mb-0 text-center font-weight-bold text-uppercase">
+              <a href="https://nemiro.app/terms-%26-conditions" target="_blank" style="color: #270235;">Terms and Conditions</a>
+            </div>
+            <div class="vr"></div>
+            <div class="ml-4 mb-0 text-center font-weight-bold text-uppercase">
+              <a href="https://nemiro.app/faq" target="_blank" style="color: #270235;">FAQs</a>
+            </div>
+            <div class="vr"></div>
+            <div class="ml-4 mb-0 text-center font-weight-bold text-uppercase">
+              <a href="https://nemiro.app/contact-us" target="_blank" style="color: #270235;">Contact</a>
+            </div>
+          </div>
+          <div class="text-center font-weight-bold d-flex align-items-center navbar-center"></div>
+          <div class="navbar-right">
+            <div class="user d-inline-block">
+              <img src="/src/assets/img/Group 1895.png" alt="">
+              <div class="logo-footer"></div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div>

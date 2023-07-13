@@ -1,0 +1,605 @@
+<div class="row">
+  <div class="col-12">
+    <h1>Distributors</h1>
+    &nbsp;&nbsp;&nbsp;
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-md-8 text-left">
+    <div class="d-block d-md-inline-block">
+      <div class="input-group">
+        <input
+          #textSearch
+          type="text"
+          id="searchInput"
+          style="width: 220px"
+          class="form-control"
+          placeholder="Search"
+          data-provide="typeahead"
+          autocomplete="off"
+          (keyup)="onKeyUp($event.target.value)"
+          (keyup.enter)="search()"
+        
+        />
+        &nbsp;&nbsp;&nbsp;
+
+        <!-- (onSelectAll)="onSelectAll($event)" -->
+
+        <button type="submit" class="btn btn-primary ml-2" (click)="search()">
+          <i class="simple-icon-magnifier"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-2">
+
+    </div> -->
+
+  <div class="col-md-4 text-right">
+    <button
+      class="btn btn-primary"
+      (click)="openModalForAdd(templateAddUpdate)">
+      Add Distributor
+    </button>
+  </div>
+</div>
+
+<div class="separator mb-3"></div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th class="text-left" scope="col">Code</th>
+                <th class="text-left" scope="col">Name</th>
+                 <th class="text-left" scope="col">Address</th>
+                  <th class="text-left" scope="col">Email</th>
+                   <th class="text-left" scope="col">Phone No</th>
+                    <th class="text-left" scope="col">NTN</th>
+                     <th class="text-left" scope="col">Certificates</th>
+                      <th class="text-left" scope="col">Website</th>
+                        <th class="text-left" scope="col">Status</th>
+                          <th class="text-center" scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  *ngFor="let dst of distributorList | paginate: {itemsPerPage: recordsPerPage, currentPage: p, totalItems: totalRecords}">
+              <td class="text-left">{{dst.distributorCode}}</td>
+              <td class="text-left">{{dst.distributorName}}</td>
+              <td class="text-left">{{dst.distributorAddress}}</td>
+              <td class="text-left">{{dst.email}}</td>
+              <td class="text-left">{{dst.phoneNo}}</td>
+              <td class="text-left">{{dst.ntn}}</td>
+              <td class="text-left">{{dst.certificate}}</td>
+              <td class="text-left">{{dst.website}}</td>
+              <td class="text-left">{{dst.isActive | Status}}</td>
+
+              <td class="text-center">
+                <i
+                  (click)="openModalForUpdate(dst.distributorID, templateAddUpdate)"
+                  class="fa fa-edit cursor-pointer"
+                  style="color: #145388; font-size: 15px; cursor: pointer"
+                  aria-hidden="true"
+                ></i>
+                &nbsp;
+                <i
+                  class="fa fa-trash-o cursor-pointer text-danger"
+                  style="font-size: 20px"
+                  aria-hidden="true"
+                  (click)="deleteAlert(dst)"
+                ></i
+                >&nbsp;
+              </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination-controls (pageChange)="pageChange((p = $event))"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateAddUpdate>
+  <form [formGroup]="addDistributersForm" (ngSubmit)="againValidOnAdd(addDistributersForm.value)" novalidate>
+    <div
+      class="modal-header"
+      style="background-color: #0f3d64; border-radius: 0px"
+    >
+      <span
+        *ngIf="formForEdit"
+        class="modal-title"
+        style="color: #fff; font-size: 18px"
+      >
+        Edit Distributor</span
+      >
+      <span
+        *ngIf="formForAdd"
+        class="modal-title"
+        style="color: #fff; font-size: 18px"
+      >
+        Add Distributor</span
+      >
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="modalRef.hide()"
+        style="color: #fff"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Distributor Code &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="distributorCode"
+              placeholder="Enter Distributor Code"
+              tabindex="1"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addDistributersForm.controls['distributorCode'].hasError('required') &&
+                addDistributersForm.controls['distributorCode'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <!-- <div *ngIf="isDistributersNameDuplicate" class="text-danger">
+              This Distributers already exists, please try different one
+            </div> -->
+          </div>
+        </div>
+        <!-- <div class="col-md-6" style="margin-top: 40px;">
+                  <input class="align-middle" type="checkbox" id="perishable" name="perishable" formControlName="peri" tabindex="2">
+                  <label for="perishable">&nbsp;  Perishable  </label>
+              </div> -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Distributor Name &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="distributorName"
+              placeholder="Enter Distributor Name"
+              tabindex="2"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addDistributersForm.controls['distributorName'].hasError('required') &&
+                addDistributersForm.controls['distributorName'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <div *ngIf="isDistributersNameDuplicate" class="text-danger">
+              This Distributers already exists, please try different one
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-6" style="margin-top: 40px;">
+                <input class="align-middle" type="checkbox" id="perishable" name="perishable" formControlName="peri" tabindex="2">
+                <label for="perishable">&nbsp;  Perishable  </label>
+            </div> -->
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Distributor Address &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="distributorAddress"
+              placeholder="Enter Distributor Address"
+              tabindex="3"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addDistributersForm.controls['distributorAddress'].hasError('required') &&
+                addDistributersForm.controls['distributorAddress'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <div *ngIf="isDistributersNameDuplicate" class="text-danger">
+              This Distributers already exists, please try different one
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-6" style="margin-top: 40px;">
+                  <input class="align-middle" type="checkbox" id="perishable" name="perishable" formControlName="peri" tabindex="2">
+                  <label for="perishable">&nbsp;  Perishable  </label>
+              </div> -->
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Distributor Email &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              type="email"
+              formControlName="distributorEmail"
+              placeholder="Enter Distributor Email"
+              (keyup)="setUpdateBtn()"
+              tabindex="4"
+            
+            />
+            <div
+              *ngIf="
+                addDistributersForm.controls['distributorEmail'].hasError('required') &&
+                addDistributersForm.controls['distributorEmail'].touched
+              "
+              class="text-danger"
+            >
+            <h5
+            class="text-danger font-6 position-absolute">
+            Required *
+          </h5>
+            </div>
+            <div
+                                  *ngIf="
+                                  addDistributersForm.controls[
+                                      'distributorEmail'
+                                    ].hasError('pattern') &&
+                                    addDistributersForm.controls['distributorEmail']
+                                      .dirty &&
+                                    !addDistributersForm.controls[
+                                      'distributorEmail'
+                                    ].hasError('required')
+                                  "
+                                >
+                                  <h5
+                                    class="text-danger font-12 position-absolute"
+                                  >
+                                    Email is not valid
+                                  </h5>
+                                </div>
+            <!-- <div *ngIf="isDistributersNameDuplicate" class="text-danger">
+              This Distributers already exists, please try different one
+            </div> -->
+          </div>
+        </div>
+        <!-- <div class="col-md-6" style="margin-top: 40px;">
+                  <input class="align-middle" type="checkbox" id="perishable" name="perishable" formControlName="peri" tabindex="2">
+                  <label for="perishable">&nbsp;  Perishable  </label>
+              </div> -->
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Distributor Phone Number &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="distributorPhoneNo"
+              placeholder="Enter Distributor Phone #"
+              tabindex="5"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addDistributersForm.controls['distributorPhoneNo'].hasError('required') &&
+                addDistributersForm.controls['distributorPhoneNo'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <!-- <div *ngIf="isDistributersNameDuplicate" class="text-danger">
+              This Distributers already exists, please try different one
+            </div> -->
+          </div>
+        </div>
+        <!-- <div class="col-md-6" style="margin-top: 40px;">
+                  <input class="align-middle" type="checkbox" id="perishable" name="perishable" formControlName="peri" tabindex="2">
+                  <label for="perishable">&nbsp;  Perishable  </label>
+              </div> -->
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Distributor NTN &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="distributorNTN"
+              placeholder="Enter Distributor NTN"
+              tabindex="6"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addDistributersForm.controls['distributorNTN'].hasError('required') &&
+                addDistributersForm.controls['distributorNTN'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+            <!-- <div *ngIf="isDistributersNameDuplicate" class="text-danger">
+              This Distributers already exists, please try different one
+            </div> -->
+          </div>
+        </div>
+        <!-- <div class="col-md-6" style="margin-top: 40px;">
+                  <input class="align-middle" type="checkbox" id="perishable" name="perishable" formControlName="peri" tabindex="2">
+                  <label for="perishable">&nbsp;  Perishable  </label>
+              </div> -->
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label
+              >Distributor Certificate &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                *ngIf="isValidating"
+                style="color: #576a3d"
+                class="fa fa-refresh fa-spin"
+              ></i
+              ><i
+                *ngIf="isMarkCorrect"
+                style="color: #576a3d"
+                class="fa fa-check"
+                aria-hidden="true"
+              ></i
+            ></label>
+            <input
+              class="form-control"
+              trim="blur"
+              formControlName="distributorCertificate"
+              placeholder="Enter Distributor Certificate"
+              tabindex="7"
+              maxlength="30"
+              (keyup)="setUpdateBtn()"
+            />
+            <div
+              *ngIf="
+                addDistributersForm.controls['distributorCertificate'].hasError('required') &&
+                addDistributersForm.controls['distributorCertificate'].touched
+              "
+              class="text-danger"
+            >
+              Required
+            </div>
+          </div>
+        </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label
+                >Distributor Website &nbsp;<span class="text-danger">*</span>&nbsp;<i
+                  *ngIf="isValidating"
+                  style="color: #576a3d"
+                  class="fa fa-refresh fa-spin"
+                ></i
+                ><i
+                  *ngIf="isMarkCorrect"
+                  style="color: #576a3d"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i
+              ></label>
+              <input
+                class="form-control"
+                trim="blur"
+                formControlName="distributorWebsite"
+                placeholder="Enter Distributor Website"
+                tabindex="8"
+                maxlength="30"
+                (keyup)="setUpdateBtn()"
+              />
+              <div
+                *ngIf="
+                  addDistributersForm.controls['distributorWebsite'].hasError('required') &&
+                  addDistributersForm.controls['distributorWebsite'].touched
+                "
+                class="text-danger"
+              >
+                Required
+              </div>
+              <!-- <div *ngIf="isDistributersNameDuplicate" class="text-danger">
+                This Distributers already exists, please try different one
+              </div> -->
+            </div>
+          </div>
+          <!-- <div class="col-md-6" style="margin-top: 40px;">
+                    <input class="align-middle" type="checkbox" id="perishable" name="perishable" formControlName="peri" tabindex="2">
+                    <label for="perishable">&nbsp;  Perishable  </label>
+                </div> -->
+        </div>
+
+        <div class="row">
+        <div class="col-md-6">
+          <div class="text-left">
+            <div class="custom-control custom-switch">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                [checked]="distributorCheck"
+                (change)="distributorCheck = !distributorCheck"
+                formControlName="distributorisActive"
+                value=""
+                id="distributorisActive"
+                (keyup)="setUpdateBtn()"
+                tabindex="9"
+              />
+              <label
+                class="custom-control-label"
+                for="distributorisActive"
+                [innerHTML]="
+                  addDistributersForm.value.distributorisActive === true
+                    ? 'Active'
+                    : 'Inactive'
+                "
+              >
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-6"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        style="background-color: #0f3d64"
+        *ngIf="formForAdd"
+         [disabled]="!addDistributersForm.valid || btnDisable"
+        class="btn text-white pull-right"
+        type="submit"
+        tabindex="10"
+      >
+        <i class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i
+          *ngIf="loading"
+          class="fa fa-refresh fa-spin"
+        ></i>
+      </button>
+      <!-- <button *ngIf="formForAdd" [disabled]="!addCategoryForm.valid || btnDisable || isDistributersNameDuplicate" style="background-color: #576a3d;" class="btn text-white pull-right" type="submit" tabindex="4"><i
+                  class="fa fa-save saveIcon"></i>&nbsp;Save&nbsp;<i *ngIf="loading"
+                  class="fa fa-refresh fa-spin"></i></button> -->
+      <button
+        type="button"
+        (click)="againValidOnUpdate(addDistributersForm.value)"
+        *ngIf="formForEdit"
+        style="background-color: #0f3d64"
+        class="btn text-white pull-right"
+        [disabled]="addDistributersForm.pristine || btnDisable"
+      >
+        <i class="fa fa-save saveIcon"></i>&nbsp;Update&nbsp;<i
+          *ngIf="loading"
+          class="fa fa-refresh fa-spin"
+        ></i>
+      </button>
+      <button
+        (click)="close()"
+        style="margin-right: 5px"
+        type="button"
+        class="btn btn-danger pull-right"
+        tabindex="11"
+      >
+        <i class="fa fa-close" aria-hidden="true"></i> Cancel
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Delete Distributers</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" (click)="close()">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h6 class="text-black-50">Are you sure you want to delete this Distributers?</h6>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="deletePrd(selectedObj)"
+      [disabled]="btnDisable"
+    >
+      Delete
+    </button>
+  </div>
+</ng-template>
+

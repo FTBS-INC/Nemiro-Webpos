@@ -1,0 +1,169 @@
+<nav class="navbar navbar-expand-lg fixed-top navbar-border"> 
+    <div class="d-flex d-inline-block align-items-center navbar-left">
+      <!-- <a href="/" class="navbar-logo" style="padding-left:135px" ><span class="logo d-none d-xs-block"></span></a> -->
+        <p
+        class="ml-n4 mb-0 text-center font-weight-bold text-uppercase" style="padding-left:75px ; font-size:30px !important; color: #270235; ">
+        W E B P O S
+      </p>
+      <p
+        class="ml-n4 mb-0 font-weight-medium" style="padding-left:35px ; font-size:18px !important; color: #270235; ">
+        Welcome, <span id="username">{{ username }}</span>
+      </p>
+      <!-- <p
+        class="ml-n4 mb-0  d-none d-xs-none d-md-none d-lg-inline-block m-auto font-weight-medium text-upercase" style="padding-left:0px ; font-size:18px !important; color: #270235; ">
+    
+      </p> -->
+    </div>
+    <div class="d-flex ml-auto align-items-center justify-content-end navbar-right">
+      
+      <div class="header-icons d-inline-block align-middle">
+        <div class="user d-inline-block">
+          <button
+        type="button"
+        class="btn btn-empty d-none d-sm-inline-block header-icon"
+        style="font-size: 35px; font-weight: 800; color: #270235; width: 5rem; padding-top: 1.5rem;"
+        (click)="home()"
+      >
+      <i  class="iconsminds-home"></i>
+      </button>
+     
+      <div class="position-relative d-inline-block">
+        <div dropdown>
+          <button dropdownToggle type="button" id="notificationButton"
+            class="btn btn-empty d-none d-sm-inline-block"
+            style="font-size: 35px; font-weight: 800; color: #270235; width: 5rem; padding-bottom: 22px; padding-left: 10px;">
+            <i class="iconsminds-user"></i>
+            <span class="count"></span>
+          </button>
+          <div id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right justify-content-left"
+            id="notificationDropdown">
+           <div class="">
+            
+            <button 
+              class="btn btn-empty d-none d-sm-inline-block" 
+              type="button"
+              (click)="profile()"
+              style="font-size: 17px; font-weight: 600; color: #270235;"
+              ><i class="iconsminds-user"></i>Profile</button>
+           </div>
+           <div class="separator"></div>   
+           <div class="">
+            <button 
+              class="btn btn-empty d-none d-sm-inline-block" 
+              type="button"
+              (click)="settings()"
+              style="font-size: 17px; font-weight: 600; color: #270235;"
+              ><i class="iconsminds-gear"></i>Settings</button>
+           </div>
+       
+           
+          </div>
+        </div>
+      </div>
+      <button 
+      id="modalButton" 
+      type="button" 
+      class="btn btn-empty d-none d-sm-inline-block header-icon" 
+      style="font-size: 35px; font-weight: 800; color: #270235; width: 5rem;"
+      (click)="openModal(userModal)">
+        <i class="iconsminds-lock-2"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-empty d-none d-sm-inline-block header-icon"
+        style="font-size: 35px; font-weight: 800; color: #270235; width: 5rem;"
+        (click)="logout()"
+      >
+      <i  class="iconsminds-power"></i>
+      </button>
+          <button class="header-icon btn btn-empty d-none d-sm-inline-block" style="color: #270235;" type="button" id="fullScreenButton"
+          (click)="fullScreenClick()">
+          <i *ngIf="!isFullScreen" class="simple-icon-size-fullscreen"></i>
+          <i *ngIf="isFullScreen" class="simple-icon-size-actual"></i>
+        </button>
+          
+        </div>
+      </div>
+    </div>
+  
+  
+</nav>
+
+
+
+<div
+bsModal
+#userModal="bs-modal"
+class="modal fade"
+[config]="{ backdrop: 'static' }"
+tabindex="-1"
+role="dialog"
+aria-labelledby="dialog-sizes-name1"
+>
+<div class="modal-dialog modal-xl">
+
+  <div class="modal-content">
+    <div class="modal-header d-flex justify-content-center align-items-center">
+      <h4
+        class="modal-title font-weight-bold text-center w-100"
+        style="font-size: 25px"
+      > Screen Lock</h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="_loginForm" (ngSubmit)="submitForm(_loginForm.value, userModal)" novalidate>
+
+        <div class="row mb-4 align-items-center justify-content-center text-center">
+          <div class="col-md-12">
+            <div class="form-group justify-content-center">
+              
+              <p class="font-weight-bold" style="font-size: 55px;" id="timer">{{ remainingTime | timerFormat }}</p>
+            </div>
+          </div>
+        </div>
+              <div class="row mb-4">
+                <div class="col-xl-12">
+                  <div class="form-group">
+                    <div class="input-group mb-4">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="simple-icon-lock"></i></span>
+                      </div>
+                      <input formControlName="password" name="fakepasswordremembered"
+                      autocomplete="new-password"
+                      [type]="fieldTextType ? 'text' : 'password'"  style="color: #270235;" class="form-control" type="password" placeholder="Enter Password">
+                      <div class="input-group-append">
+                        <span class="input-group-text">
+                          <i
+                            class="fa"
+                            [ngClass]="{
+                              'fa-eye-slash': !fieldTextType,
+                              'fa-eye': fieldTextType
+                            }"
+                            (click)="toggleFieldTextType()"
+                          ></i>
+                        </span>
+                      </div>
+                    </div>
+                    <div *ngIf="_loginForm.controls['password'].hasError('required') && _loginForm.controls['password'].touched">
+                      <h5 class="text-danger font-12">Required *</h5>
+                    </div>
+                  </div>
+                  <div class="form-group mt-2 text-center">
+                    <app-state-button btnClass="btn btn-primary"   [currentState]="_login_variables._buttonState" [isDisabled]="(_login_variables._buttonDisabled || !_loginForm.valid)">Unlock</app-state-button>
+                  </div>
+                  </div>
+              </div>
+           
+            
+      
+      </form>
+      
+    </div>
+    
+    <!-- <div class="modal-footer">
+      <div class="row w-100">
+       
+      </div>
+    </div> -->
+  </div>
+</div>
+</div>

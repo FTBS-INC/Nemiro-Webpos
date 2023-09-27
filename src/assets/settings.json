@@ -1,0 +1,77 @@
+{
+  "API_URL": "https://api.ftbsinc.com/api/",
+  "OLD_API_URL": "http://192.168.50.30:8700/api/",
+  "CMS_STATIC_FILES": "http://40.83.8.118:2080/",
+  "XVMS_CDN_API": "http://40.83.8.118:2080/api/",
+  "STATIC_IMAGE": "https://localhost:5003/",
+  "STATIC_THUMBNAIL": "http://192.168.50.30:8700/",
+  "LICENSE_API_URL": "http://40.83.8.118:8601/",
+  "REPORT_API_LINK": "http://192.168.50.30:8700/api/reports/",
+  "NEMIRO_USER": "NEMIRO_USER",
+  "MAX_FILE_SIZE": "1000 MB",
+  "LAYOUT_TOUR": "LayoutTour",
+  "CONTENT_ONE": "content-one",
+  "CONTENT_TWO": "content-two",
+  "CONTENT_THREE": "content-three",
+  "PLAYLIST": "playlist",
+  "CREATE_TEMPLATE": "createTemplate",
+  "DEFINE_THEM_TOUR": "defineThemeTour",
+  "ALLOWED_TYPES": {
+    "Video": {
+      "mimetypes": "video/mp4",
+      "extensions": "mp4"
+    },
+    "Image": {
+      "mimetypes": "image/png,image/jpeg,image/jpg,image/gif",
+      "extensions": "png, jpeg, jpg, gif"
+    },
+    "Mix": {
+      "mimetypes": "image/png,image/jpeg,image/jpg,image/gif,application/pdf",
+      "extensions": "png, jpeg, jpg, gif, pdf"
+    },
+    "Both": {
+      "mimetypes": "image/png,image/jpeg,image/jpg,image/gif,video/mp4",
+      "extensions": "png , jpeg, jpg, gif, mp4"
+    },
+    "listview": {
+      "mimetypes": "image/png,image/jpeg,image/jpg,application/pdf,video/mp4",
+      "extensions": "png , jpeg, jpg, pdf, mp4"
+    },
+    "pdf": {
+      "mimetypes": "application/pdf",
+      "extensions": "pdf"
+    },
+    "csv": {
+      "mimetypes": "application/vnd.ms-excel,text/csv,.csv",
+      "extensions": "csv"
+    },
+    "zip": {
+      "mimetypes": "application/x-rar-compressed,.zip, application/octet-stream,application/zip, application/octet-stream, application/x-zip-compressed, multipart/x-zip",
+      "extensions": "zip"
+    }
+  },
+  "ALLOWED_IMAGE_TYPES": {
+    "mimetypes": "image/png,image/jpeg,image/jpg,image/gif",
+    "extensions": "png , jpeg, jpg, gif"
+  },
+  "ALLOWED_VIDEO_TYPES": {
+    "mimetypes": "video/mp4,video/avi,video/wmv,video/mkv",
+    "extensions": " mp4, avi, wmv, mkv"
+  },
+  "ALLOWED_DOCUMENTS": {
+    "mimetypes": "application/pdf",
+    "extensions": " pdf"
+  },
+  "ALLOWED_ARCHIVES": {
+    "mimetypes": "application/x-rar-compressed, application/octet-stream,application/zip, application/octet-stream, application/x-zip-compressed, multipart/x-zip",
+    "extensions": " rar, zip"
+  },
+  "ALLOWED_CSVS": {
+    "mimetypes": "application/vnd.ms-excel,text/csv,.csv",
+    "extensions": " csv"
+  },
+  "ALLOWED_TXT_FILE": {
+    "mimetypes": "text/plain",
+    "extensions": "txt"
+  }
+}

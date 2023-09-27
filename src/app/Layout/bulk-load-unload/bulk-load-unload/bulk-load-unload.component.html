@@ -1,0 +1,358 @@
+<div class="container justify-content-center">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-6 col-md-6">
+            <form style="border-radius: 10px; background-color: white;">
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <div class="col-md-4">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="modal-header d-flex justify-content-center" style="background-color: #680D94;
+                 border-bottom-left-radius: 5px; 
+                 border-bottom-right-radius:5px;
+                 color: white;
+                  ">
+                                <h5 class="modal-title font-weight-bold" style="font-size: 20px">Batch Statistics</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-3">
+                        <div class="col-12 col-md-12 text-center">
+                            <!-- <div *ngIf="bulkLoadList && bulkLoadList.length > 0">
+                                <p style="font: 700; font-size: 25px;">{{ bulkLoadList[0]?.batchNo }}</p>
+                            </div> -->
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="account-reference" style="color: #680D94; font-weight: 700;">Batch
+                                    No</label>
+                                <p style="color: black;">{{ bulkLoadList.batchNo }}</p>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="account-reference" style="color: #680D94; font-weight: 700;">Total
+                                    Record</label>
+                                <p style="color: black;">{{ bulkLoadList.totalRecords }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="account-reference" style="color: #680D94; font-weight: 700;">Successfully
+                                    Logged</label>
+                                <p style="color: black;">{{ bulkLoadList.loggedRecords }}</p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="account-reference" style="color: #680D94; font-weight: 700;">Invalid
+                                    Records</label>
+                                <p style="color: black;">{{ bulkLoadList.invalidRecords }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="account-reference" style="color: #680D94; font-weight: 700;">Total Load
+                                    Record</label>
+                                <p style="color: black;">{{ bulkLoadList.totalCreditRecords }}</p>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="account-reference" style="color: #680D94; font-weight: 700;">Amount</label>
+                                <p style="color: black;">{{ bulkLoadList.totalAmount }}</p>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="account-reference" style="color: #680D94; font-weight: 700;">Credit</label>
+                                <p style="color: black;">{{ bulkLoadList.creditAmount }}</p>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="account-reference" style="color: #680D94; font-weight: 700;">Debit</label>
+                                <p style="color: black;">{{ bulkLoadList.debitAmount }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" style="background-color: white;
+                border-color: #680D94;
+                color: #680D94;" (click)="closeModal()">Close</button>
+                </div>
+
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div bsModal #userModal="bs-modal" class="modal fade" [config]="{ backdrop: 'static' }" tabindex="-1" role="dialog"
+    aria-labelledby="dialog-sizes-name1">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal -->
+        <!-- <div class="modal-header">
+<h4
+class="modal-title pull-left"
+[innerHTML]="
+_user_variables._userID === null ? 'Add User' : 'Edit User'
+"
+></h4>
+<button
+type="button"
+class="close pull-right"
+aria-label="Close"
+(click)="closeUserModel(userModal)"
+>
+<span aria-hidden="true">&times;</span>
+</button>
+</div> -->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="mb-0">
+                            <div class="card-body">
+                                <div id="progressbarwizard">
+                                    <ul class="nav nav-pills bg-light nav-justified form-wizard-header mb-3">
+                                        <li class="nav-item point mb-0">
+                                            <a class="nav-link rounded-0 pt-2 pb-2" [ngClass]="{
+                'active text-white': _user_variables._step === 1
+              }">
+                                                <i class="mdi mdi-account-circle mr-1"></i>
+                                                <span class="d-none d-sm-inline">Instructions</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item point mb-0">
+                                            <a class="nav-link rounded-0 pt-2 pb-2" [ngClass]="{
+                'active text-white': _user_variables._step === 2
+              }">
+                                                <i class="mdi mdi-face-profile mr-1"></i>
+                                                <span class="d-none d-sm-inline">Download CSV Sample</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item point mb-0">
+                                            <a class="nav-link rounded-0 pt-2 pb-2" [ngClass]="{
+                'active text-white': _user_variables._step === 3
+              }">
+                                                <i class="mdi mdi-face-profile mr-1"></i>
+                                                <span class="d-none d-sm-inline">Upload CSV File</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content b-0 mb-0 pt-0">
+                                        <div id="bar" class="progress mb-3" style="height: 7px">
+
+                                            <!-- Progress Bar -->
+                                            <div class="bar progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                                [ngStyle]="{
+                'width.%':
+                  _user_variables._step === 1
+                    ? '33'
+                    : _user_variables._step === 2
+                    ? '67'
+                    : _user_variables._step === 3
+                    ? '100'
+                    : ' '
+              }"></div>
+
+                                        </div>
+                                        <form [formGroup]="userRegisterFormStep1" autocomplete="off"
+                                            (ngSubmit)="ClickNext()">
+                                            <div *ngIf="_user_variables._step === 1" class="tab-pane active"
+                                                id="Personal-Info">
+
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12 mt-4"></div>
+                                                    <div class="col-12 mt-2">
+
+                                                        <h3 class="mb-4 text-center" style="font-weight: 600;">
+                                                            Instructions for Correct
+                                                            CSV File
+                                                            Upload</h3>
+                                                        <div class="row">
+                                                            <div class="col-12 mb-2">
+                                                                <p><strong>Step 1:</strong> Ensure your CSV file
+                                                                    follows the required format.</p>
+                                                            </div>
+                                                            <div class="col-12 mb-2">
+                                                                <p><strong>Step 2:</strong> Verify that your
+                                                                    data is organized correctly in columns.</p>
+                                                            </div>
+                                                            <div class="col-12 mb-2">
+                                                                <p><strong>Step 3:</strong> Double-check for any
+                                                                    missing or incorrect data.</p>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </form>
+                                        <div>
+                                            <div *ngIf="_user_variables._step === 2" class="tab-pane active"
+                                                id="Contact-Info">
+                                                <form [formGroup]="userRegisterFormStep2" novalidate>
+                                                    <div class="row  justify-content-center">
+                                                        <div class="col-12 mt-4"></div>
+                                                        <div class="col-12 mt-4"></div>
+                                                        <!-- <div class="col-12 mt-4"></div> -->
+                                                        <div class="col-12 mt-4 mb-3 text-center">
+                                                            <h3 class="mb-4" style="font-weight: 600;">Click
+                                                                the button below to download a sample CSV file
+                                                            </h3>
+
+                                                            <a href="/assets/csv/sample.csv" download="sample.csv"
+                                                                class="btn btn-primary text-center mt-2"
+                                                                style="color: white; height: 70px; width: 250px; border-radius: 0.5rem;"><i
+                                                                    style="font-size: xx-large;"
+                                                                    class="fa fa-download"></i> <span
+                                                                    style="font-size: 18px; font-weight: bold;  display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">Download
+                                                                    Sample CSV</span></a>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div *ngIf="_user_variables._step === 3" class="tab-pane active"
+                                                id="Contact-Info">
+                                                <form [formGroup]="userRegisterFormStep3" novalidate>
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-12 mt-4"></div>
+                                                        <div class="col-12 mt-3"></div>
+                                                        <div class="col-12 text-center">
+                                                            <h3 class="mb-4" style="font-weight: 600;">Click the button
+                                                                below to upload the CSV file:</h3>
+
+                                                            <h5 class="mb-4">Upload a CSV file:</h5>
+                                                            <input class="text-center mb-4" type="file"
+                                                                id="csvFileInput" accept=".csv"
+                                                                (change)="onFileSelected($event)">
+                                                            <button
+                                                                style="color: white; height: 70px; width: 250px; border-radius: 0.5rem;"
+                                                                class="btn btn-primary text-center mt-2"
+                                                                (click)="uploadCSVFile()">
+                                                                <i style="font-size: xx-large;"
+                                                                    class="fa fa-upload"></i>
+                                                                <span style="font-size: 18px; font-weight: bold;">
+                                                                    Upload
+                                                                    CSV</span>
+                                                            </button>
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row w-100">
+                    <div class="col-12 col-md-6">
+                        <p class="text-danger">{{ APILoader }}</p>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <ul class="list-inline mb-0" *ngIf="_user_variables._step === 1">
+                            <li class="next list-inline-item float-right">
+
+
+                                <div role="group" class="btn-group" aria-label="Basic">
+                                    <button class="btn btn-outline-danger" (click)="closeUserModel(userModal)">
+                                        Cancel
+                                    </button>
+                                    <button type="button" style="color: white;" class="btn btn-primary"
+                                        (click)="ClickNext()">
+                                        <!-- [disabled]="!userRegisterFormStep1.valid"
+          (click)="ClickNext()"  -->
+                                        Next
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-inline mb-0" *ngIf="_user_variables._step === 2">
+                            <li class="next list-inline-item float-right">
+
+                                <div role="group" class="btn-group" aria-label="Basic">
+                                    <button style="color: white;" (click)="ClickPrevious()"
+                                        class="btn btn-primary mr-1">
+
+                                        Previous
+                                    </button>
+                                    <button style="color: white;" type="button" class="btn btn-primary"
+                                        (click)="ClickNext()">
+                                        <!-- [disabled]="!userRegisterFormStep1.valid"
+          (click)="ClickNext()"  -->
+                                        Next
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-inline mb-0" *ngIf="_user_variables._step === 3">
+                            <li class="next list-inline-item float-right">
+                                <button class="btn btn-outline-danger" (click)="closeUserModel(userModal)">
+                                    Cancel
+                                </button>
+                                &nbsp;
+                                <div role="group" class="btn-group" aria-label="Basic">
+                                    <button style="color: white;" (click)="ClickPrevious()"
+                                        class="btn btn-primary mr-1">
+                                        Previous
+                                    </button>
+                                    <button (click)="submitForm(userModal)" class="btn btn-primary text-light">
+                                        Submit
+                                        <!--  *ngIf="_user_variables._step === 2"
+          [disabled]="
+            !userRegisterFormStep2.valid ||
+            _user_variables._buttonDisabled
+          "
+          [innerHTML]="
+            userRegisterFormStep1.controls.userID.value === -1
+              ? 'Create'
+              : 'Update'
+          "
+-->
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

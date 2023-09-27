@@ -1,0 +1,158 @@
+<div class="container justify-content-center">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+      <form 
+      style="border-radius: 10px; background-color: white;">
+      <div class="row">
+        <div class="col-md-12 d-flex justify-content-center">
+          <div class="col-md-3">
+           
+          </div> 
+          <div class="col-md-6">
+            <div class="modal-header d-flex justify-content-center"
+            style="background-color: #680D94;
+             border-bottom-left-radius: 5px; 
+             border-bottom-right-radius:5px;
+             color: white;
+              ">
+              <h5 class="modal-title font-weight-bold" style="font-size:medium;">User Profile</h5>
+            </div>
+          </div>
+          <div class="col-md-3">
+  
+          </div>
+        </div>
+      </div>
+     
+        
+          <div class="modal-body align-items-center">
+            <form >
+                <!-- [formGroup]="
+            userPreferencesForm" -->
+            <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <h4><label for="account-reference"  style="color: #680D94; font-weight: 700; text-decoration: underline;"> User Name</label></h4>
+                <h6 type="text" id="userName" style="background-color: white; color: #4c0470;font-size: 15px; ">{{ userName }}</h6>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <h4><label for="account-reference"  style="color: #680D94; font-weight: 700;text-decoration: underline;">Role</label></h4>
+                <h5 type="text" id="userName" style="background-color: white; color: #4c0470;font-size: 15px; ">{{ userName }}</h5>
+              </div>
+            </div>  
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <h4><label for="account-reference"  style="color: #680D94; font-weight: 700;text-decoration: underline;">First Name</label></h4>
+                  
+                  <h5 type="text" id="firstName" style="background-color: white; color: #4c0470;font-size: 15px; ">{{ firstName }}</h5>
+           
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <h4><label for="account-reference"  style="color: #680D94; font-weight: 700;text-decoration: underline;">Last Name</label></h4>
+                  <h5 type="text" id="lastName" style="background-color: white; color: #4c0470;font-size: 15px; ">{{ lastName }}</h5>
+                </div>
+              </div>  
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <h4><label for="account-reference"  style="color: #680D94; font-weight: 700;text-decoration: underline;">Address</label></h4>
+                    <h5 type="text" id="address" style="background-color: white; color: #4c0470;font-size: 15px; ">{{ address }}</h5>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <h4><label for="account-reference"  style="color: #680D94; font-weight: 700;text-decoration: underline;">ZIP Code</label></h4>
+                    <h5 type="text" id="zip" style="background-color: white; color: #4c0470;font-size: 15px; ">{{ zip }}</h5>
+                  </div>
+                </div>  
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                   
+                  </div>
+                  <!-- <div class="col-md-4">
+                    <div class="form-group">
+                      <h4><label for="account-reference"  style="color: #680D94; font-weight: 700;text-decoration: underline;">Country</label></h4>
+                      <h5 type="text" id="country" style="background-color: white; color: #4c0470;font-size: 20px; ">{{ country }}</h5>
+                    </div>
+                  </div> -->
+                  <div class="col-md-4">
+               
+                  </div>  
+                  </div>
+            
+              <!-- <div class="form-group">
+                <label for="account-reference"  style="color: #680D94; font-weight: 700;">Account Reference:</label>
+                <input type="text" 
+                class="form-control" 
+                placeholder="ACC" 
+                formControlName="accountReference"
+                style="background-color: white;
+                border-radius: 5px;
+                border-color: #680D94;
+                color: #680D94;">
+              </div>
+              <div class="form-group">
+                <label for="amount" style="color: #680D94; font-weight: 700;">Amount:</label>
+                <input type="text" 
+                class="form-control" 
+                placeholder="amount" 
+                formControlName="amount"
+                style="background-color: white;
+                border-radius: 5px;
+                border-color: #680D94;
+                color: #680D94;"
+                >
+              </div> -->
+            </form>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <!-- <button type="button" 
+            class="btn btn-primary"
+            style="background-color: #680D94;
+            border-color: #680D94;
+            color: white;"
+             (click)="submitForm()">Submit</button> -->
+            <button type="button" 
+            class="btn btn-secondary" 
+            style="background-color: white;
+            border-color: #680D94;
+            color: #680D94;"
+            (click)="closeModal()">Close</button>
+          </div>
+     </form>
+    </div>
+  </div>
+</div>
+   
+  
+  
+  <!-- <ng-template #delete>
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" >×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h6 class="text-black-50">Are you sure you want to delete this Product?</h6>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-danger"
+        
+      >
+        Delete
+      </button>
+    </div>
+  </ng-template> -->
+  
+  

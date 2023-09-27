@@ -1,0 +1,128 @@
+<div class="container justify-content-center">
+
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form style="border-radius: 10px; background-color: white;">
+        <div class="row">
+          <div class="col-md-12 d-flex justify-content-center">
+            <div class="col-md-3">
+
+            </div>
+            <div class="col-md-6">
+              <div class="modal-header d-flex justify-content-center" style="background-color: #680D94;
+               border-bottom-left-radius: 5px; 
+               border-bottom-right-radius:5px;
+               color: white;
+                ">
+                <h5 class="modal-title font-weight-bold" style="font-size:large;">Security Settings</h5>
+              </div>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="modal-body mt-3">
+          <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()">
+            <div class="row">
+              <div class="col-md-12">
+
+                <div class="input-group mb-3">
+                  <!-- Change input type to be dynamic -->
+                  <label for="currentPassword" style="color: #680D94; font-weight: 700; margin-top: 5px;">Current
+                    Password</label>
+                  <input formControlName="oldPassword" name="fakepasswordremembered" autocomplete="new-password"
+                    [type]="fieldTextType ? 'text' : 'password'" class="form-control"
+                    placeholder="Enter Current Password" tabindex="3" style="background-color: white;
+                  border-radius: 5px;
+                  border-color: #680D94;
+                  color: #680D94;
+                  margin-left: 5px;
+                  " />
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <i class="fa" [ngClass]="{
+                          'fa-eye-slash': !fieldTextType,
+                          'fa-eye': fieldTextType
+                        }" (click)="toggleFieldTextType()"></i>
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="input-group mb-3">
+                  <!-- Change input type to be dynamic -->
+                  <label for="newPassword" class="mr-3" style="color: #680D94; font-weight: 700; margin-top: 5px;">New
+                    Password</label>
+                  <input formControlName="newPassword" name="fakepasswordremembered" autocomplete="new-password"
+                    [type]="fieldTextType ? 'text' : 'password'" class="form-control" placeholder="Enter New Password"
+                    tabindex="3" style="background-color: white;
+                      border-radius: 5px;
+                      border-color: #680D94;
+                      color: #680D94;
+                      margin-left: 5px;
+                      " />
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <i class="fa" [ngClass]="{
+                              'fa-eye-slash': !fieldTextType,
+                              'fa-eye': fieldTextType
+                            }" (click)="toggleFieldTextType()"></i>
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="input-group mb-3">
+                  <!-- Change input type to be dynamic -->
+                  <label for="confirmPassword" style="color: #680D94; font-weight: 700; margin-top: 5px;">Confirm
+                    Password</label>
+                  <input formControlName="confirmPassword" name="fakepasswordremembered" autocomplete="new-password"
+                    [type]="fieldTextType ? 'text' : 'password'" class="form-control" placeholder="Confirm New Password"
+                    tabindex="3" style="background-color: white;
+                          border-radius: 5px;
+                          border-color: #680D94;
+                          color: #680D94;
+                          margin-left: 5px;
+                          " />
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <i class="fa" [ngClass]="{
+                                  'fa-eye-slash': !fieldTextType,
+                                  'fa-eye': fieldTextType
+                                }" (click)="toggleFieldTextType()"></i>
+                    </span>
+                  </div>
+
+                </div>
+                <div
+                  *ngIf="updatePasswordForm.get('confirmPassword').hasError('mismatch') && updatePasswordForm.get('confirmPassword').dirty">
+                  Passwords do not match.
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-primary" style="background-color: #680D94;
+              border-color: #680D94;
+              color: white;"
+            [disabled]="updatePasswordForm.get('confirmPassword').hasError('mismatch') || updatePasswordForm.invalid"
+            (click)="updatePassword()">Submit</button>
+          <button type="button" class="btn btn-secondary" style="background-color: white;
+              border-color: #680D94;
+              color: #680D94;" (click)="closeModal()">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

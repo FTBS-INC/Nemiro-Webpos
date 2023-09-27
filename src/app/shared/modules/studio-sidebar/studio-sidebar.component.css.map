@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "studio-sidebar.component.scss"
+    ],
+    "names": [],
+    "file": "studio-sidebar.component.css"
+}

@@ -1,0 +1,44 @@
+.modal-content {
+    position: fixed;
+    display: block;
+    width: 450px;
+    height: 350px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  // .container {
+  //   position: fixed;
+  //     display: block;
+  //     // width: 450px;
+  //     // height: 350px;
+  //     // top: 50%;
+  //     // left: 50%;
+  //     // transform: translate(-50%, -50%);
+  // }
+  .container-fluid {
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .form-group {
+    position: relative;
+  
+    &.amount-dollar {
+      &::before {
+        content: "$";
+        position: absolute;
+        left: 10px;
+        top: 46px;
+        transform: translatey(-50%);
+        font-size: 16px;
+      }
+  
+      .form-control {
+        padding-left: 25px;
+      }
+    }
+  }

@@ -1,0 +1,22 @@
+<ng-template #content>
+  <div [ngClass]="isBorder?'border border-primary rounded':''">
+    <div class="modal-header p-3">
+      <h4 class="modal-title pull-left ">{{title}}</h4>
+      <button type="button" class="close pull-right " aria-label="Close" (click)="closeModel();">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>{{messege}}</p>
+    </div>
+    <div class="modal-footer">
+      <div class="text-right">
+        <button type="button" [ngClass]="changeClass !== true?'btn-outline-danger':'btn-outline-danger'"
+          class="btn  waves-effect waves-light" (click)="closeModel();">{{closeBtnText}}</button>&nbsp;
+        <button type="submit" *ngIf="isBtnShow" (click)="emitFunction()"
+          class=" btn btn-primary waves-effect waves-light">{{ActionBtnText}}</button>
+      </div>
+    </div>
+  </div>
+
+</ng-template>

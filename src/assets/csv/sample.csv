@@ -1,0 +1,6 @@
+ReferenceId,Email,Username,amount,FeeCharged,Action,Remarks
+60600000000001,abc@email.com,abc3,12,yes,credit,
+60600000000002,abc@email.com,abc4,1,no,debit,comments
+60600000000003,abc@email.com,abc5,2,yes,credit,
+60600000000004,abc@email.com,abc6,12,no,credit,comments
+60600000000004,abc@email.com,adc3,1,no,credit,credited

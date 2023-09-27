@@ -1,0 +1,24 @@
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    padding-top: 60px;
+}
+.sidebar a {
+    padding: 8px 8px 8px 32px !important;
+    text-decoration: none !important;
+    font-size: 25px !important;
+    color: #818181 !important;
+    display: block !important;
+    }  
+// .main-menu{
+//     width: $main-menu-width !important;
+// }  
+// $main-menu-item-height: 110px !important;
+// $main-menu-width: 200px ;
+// $main-menu-width-lg: 200px !important;
+// $main-menu-width-md: 300px !important;
+// $main-menu-width-xs: 90px !important;

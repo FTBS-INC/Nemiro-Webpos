@@ -1,0 +1,65 @@
+.modal-content {
+    position: fixed;
+    display: block;
+    // width: 450px;
+    // height: 350px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.progress-banner {
+    height: 100px !important;
+}
+
+.customImage {
+    height: 150px;
+    width: 150px;
+    margin-bottom: 35px;
+}
+
+.modal-content {
+    position: fixed;
+    display: block;
+    width: 50%;
+    // width: 450px;
+    height: 480px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container-wrapper {
+
+
+    /* Apply margin around the container */
+    margin: 3rem; // Adjust the value to set the desired spacing
+}
+
+.container-fluid {
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+.form-group {
+    position: relative;
+
+    &.amount-dollar {
+        &::before {
+            content: "$";
+            position: absolute;
+            left: 10px;
+            top: 46px;
+            transform: translatey(-50%);
+            font-size: 16px;
+        }
+
+        .form-control {
+            padding-left: 25px;
+        }
+    }
+}

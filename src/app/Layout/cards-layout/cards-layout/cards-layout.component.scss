@@ -1,0 +1,78 @@
+@import 'ag-grid-community/dist/styles/ag-grid.css';
+@import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+// .row {
+//     display: flex !important;
+//     flex-wrap: wrap !important;
+//     justify-content: center !important;
+//     align-items: center !important;
+//     height: 100vh !important;
+//     // margin-right: 38px !important;
+//     // margin-left: -25px !important;
+//     // padding-top: 120px !important; 
+//     // padding-left: 90px !important;
+//   }
+
+.container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 60vh !important;
+  margin: 0 auto !important;
+
+}
+
+.row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 auto !important;
+}
+
+.card:hover {
+  transform: scale(1.05) !important;
+  /* Increase the size of the card on hover */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3) !important;
+  /* Add a subtle box shadow */
+  cursor: pointer !important;
+  /* Change the cursor to indicate interactivity */
+  filter: brightness(85%) !important;
+}
+
+.card {
+  flex-basis: calc(33.33% - 20px) !important;
+  /* Adjust the width of each card */
+  margin-bottom: 20px !important;
+  margin: 10px !important;
+  justify-content: center;
+}
+
+// @media (max-width: 992px) {
+//   .card {
+//     flex-basis: calc(25% - 20px) !important; /* Adjust the width of each card for smaller screens */
+//   }
+// }
+@media (max-width: 768px) {
+  .card {
+    flex-basis: calc(50% - 20px) !important;
+    /* Adjust the width of each card for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    flex-basis: 100% !important;
+    /* Full width for mobile devices */
+  }
+}
+
+.container-wrapper {
+  // display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; // Adjust the value as needed for the desired height
+
+  /* Apply margin around the container */
+  margin: 2rem; // Adjust the value to set the desired spacing
+}
